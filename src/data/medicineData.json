@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "disease": "Common Cold",
+    "category": "Respiratory",
+    "symptoms": ["Runny nose", "Sore throat", "Cough", "Mild fever"],
+    "medicines": [
+      { "name": "Paracetamol", "dosage": "500mg every 6-8 hours", "notes": "For fever and body ache" },
+      { "name": "Cetirizine", "dosage": "10mg once daily", "notes": "For runny nose and sneezing" }
+    ],
+    "precautions": "Stay hydrated, rest well. See a doctor if fever exceeds 3 days.",
+    "disclaimer": "General information only, not a prescription."
+  },
+  {
+    "id": "2",
+    "disease": "Type 2 Diabetes",
+    "category": "Endocrine",
+    "symptoms": ["Frequent urination", "Increased thirst", "Fatigue", "Blurred vision"],
+    "medicines": [
+      { "name": "Metformin", "dosage": "500mg-1000mg twice daily", "notes": "Taken with meals" },
+      { "name": "Glimepiride", "dosage": "As prescribed", "notes": "Monitor blood sugar regularly" }
+    ],
+    "precautions": "Requires ongoing doctor supervision and regular blood sugar monitoring.",
+    "disclaimer": "General information only, not a prescription."
+  },
+  {
+    "id": "3",
+    "disease": "Hypertension",
+    "category": "Cardiovascular",
+    "symptoms": ["Headache", "Dizziness", "Chest discomfort", "Often no symptoms"],
+    "medicines": [
+      { "name": "Amlodipine", "dosage": "5mg once daily", "notes": "Take at the same time each day" },
+      { "name": "Losartan", "dosage": "50mg once daily", "notes": "Avoid with certain kidney conditions" }
+    ],
+    "precautions": "Reduce salt intake, exercise, monitor blood pressure regularly.",
+    "disclaimer": "General information only, not a prescription."
+  },
+  {
+    "id": "4",
+    "disease": "Migraine",
+    "category": "Neurological",
+    "symptoms": ["Throbbing headache", "Nausea", "Light sensitivity"],
+    "medicines": [
+      { "name": "Sumatriptan", "dosage": "As prescribed at onset", "notes": "For acute attacks" },
+      { "name": "Ibuprofen", "dosage": "400mg as needed", "notes": "For mild to moderate pain" }
+    ],
+    "precautions": "Identify and avoid personal triggers like stress or certain foods.",
+    "disclaimer": "General information only, not a prescription."
+  },
+  {
+    "id": "5",
+    "disease": "Acid Reflux (GERD)",
+    "category": "Digestive",
+    "symptoms": ["Heartburn", "Regurgitation", "Chest discomfort after meals"],
+    "medicines": [
+      { "name": "Omeprazole", "dosage": "20mg once daily before breakfast", "notes": "Reduces stomach acid" },
+      { "name": "Antacid (e.g. Gelusil)", "dosage": "As needed", "notes": "For quick relief" }
+    ],
+    "precautions": "Avoid spicy/oily food, don't lie down right after eating.",
+    "disclaimer": "General information only, not a prescription."
+  }
+]
