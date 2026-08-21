@@ -1,10 +1,25 @@
+
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { ActivityIndicator, View, Text } from "react-native";
+import {
+  ActivityIndicator,
+  View,
+  Text,
+} from "react-native";
+
+import {
+  NavigationContainer,
+} from "@react-navigation/native";
+
+import {
+  createNativeStackNavigator,
+} from "@react-navigation/native-stack";
+
+import {
+  createBottomTabNavigator,
+} from "@react-navigation/bottom-tabs";
 
 import { useAuth } from "../context/AuthContext";
+
 import SignInScreen from "../screens/SignInScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import HomeScreen from "../screens/HomeScreen";
@@ -21,8 +36,15 @@ const Tab = createBottomTabNavigator();
 function AuthNavigator() {
   return (
     <AuthStack.Navigator screenOptions={{ headerShown: false }}>
-      <AuthStack.Screen name="SignIn" component={SignInScreen} />
-      <AuthStack.Screen name="SignUp" component={SignUpScreen} />
+      <AuthStack.Screen
+        name="SignIn"
+        component={SignInScreen}
+      />
+
+      <AuthStack.Screen
+        name="SignUp"
+        component={SignUpScreen}
+      />
     </AuthStack.Navigator>
   );
 }
@@ -30,7 +52,12 @@ function AuthNavigator() {
 function HomeStackNavigator() {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Search" component={HomeScreen} options={{ headerShown: false }} />
+      <HomeStack.Screen
+        name="Search"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+
       <HomeStack.Screen
         name="MedicineDetail"
         component={MedicineDetailScreen}
@@ -41,36 +68,68 @@ function HomeStackNavigator() {
 }
 
 function tabIcon(emoji) {
-  return () => <Text style={{ fontSize: 20 }}>{emoji}</Text>;
+  return () => (
+    <Text style={{ fontSize: 20 }}>
+      {emoji}
+    </Text>
+  );
 }
 
 function MainTabs() {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: "#1E88E5" }}>
+    <Tab.Navigator
+  screenOptions={{
+    headerShown: false,
+    tabBarActiveTintColor: "#1E88E5",
+    tabBarStyle: {
+      height: 65,
+      paddingBottom: 8,
+      paddingTop: 5,
+    },
+  }}
+>
       <Tab.Screen
         name="Home"
         component={HomeStackNavigator}
-        options={{ tabBarIcon: tabIcon("🔍") }}
+        options={{
+          tabBarIcon: tabIcon("🏠"),
+          title: "Home",
+        }}
       />
+
       <Tab.Screen
         name="Chatbot"
         component={ChatbotScreen}
-        options={{ headerShown: true, title: "Chat Assistant", tabBarIcon: tabIcon("💬") }}
+        options={{
+          headerShown: true,
+          title: "Chat Assistant",
+          tabBarIcon: tabIcon("💬"),
+        }}
       />
+
       <Tab.Screen
         name="Reminders"
         component={RemindersScreen}
-        options={{ tabBarIcon: tabIcon("⏰") }}
+        options={{
+          tabBarIcon: tabIcon("⏰"),
+        }}
       />
+
       <Tab.Screen
         name="History"
         component={HistoryScreen}
-        options={{ tabBarIcon: tabIcon("🕘") }}
+        options={{
+          tabBarIcon: tabIcon("🕘"),
+        }}
       />
+
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
-        options={{ headerShown: true, tabBarIcon: tabIcon("👤") }}
+        options={{
+          headerShown: true,
+          tabBarIcon: tabIcon("👤"),
+        }}
       />
     </Tab.Navigator>
   );
@@ -81,8 +140,17 @@ export default function AppNavigator() {
 
   if (loading) {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <ActivityIndicator size="large" color="#1E88E5" />
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator
+          size="large"
+          color="#1E88E5"
+        />
       </View>
     );
   }
@@ -93,3 +161,4 @@ export default function AppNavigator() {
     </NavigationContainer>
   );
 }
+

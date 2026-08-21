@@ -1,0 +1,92 @@
+
+[
+  {
+    "id": "med-1",
+    "name": "Paracetamol",
+    "category": "Fever & Pain",
+    "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600",
+    "usedFor": ["Fever", "Mild to moderate pain", "Body aches"],
+    "forms": ["Tablet", "Capsule", "Liquid"],
+    "relatedConditions": ["Common Cold"],
+    "precautions": "Use only according to the product label or advice from a healthcare professional. Avoid taking multiple products that contain the same active ingredient.",
+    "whenToSeekHelp": "Seek professional advice if symptoms are severe, persistent, or getting worse."
+  },
+  {
+    "id": "med-2",
+    "name": "Cetirizine",
+    "category": "Allergy",
+    "image": "https://images.unsplash.com/photo-1585435557343-3b092031a831?w=600",
+    "usedFor": ["Allergy symptoms", "Sneezing", "Runny nose"],
+    "forms": ["Tablet", "Liquid"],
+    "relatedConditions": ["Common Cold", "Allergic conditions"],
+    "precautions": "It may cause drowsiness in some people. Follow the product label or professional advice.",
+    "whenToSeekHelp": "Seek urgent medical help for serious allergic reactions or difficulty breathing."
+  },
+  {
+    "id": "med-3",
+    "name": "Metformin",
+    "category": "Diabetes",
+    "image": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=600",
+    "usedFor": ["Type 2 diabetes"],
+    "forms": ["Tablet"],
+    "relatedConditions": ["Type 2 Diabetes"],
+    "precautions": "Use under the supervision of a healthcare professional. Do not start or stop diabetes medication without professional advice.",
+    "whenToSeekHelp": "Contact a healthcare professional if you experience concerning or unusual symptoms."
+  },
+  {
+    "id": "med-4",
+    "name": "Amlodipine",
+    "category": "Heart & Blood Pressure",
+    "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600",
+    "usedFor": ["High blood pressure", "Certain heart-related conditions"],
+    "forms": ["Tablet"],
+    "relatedConditions": ["Hypertension"],
+    "precautions": "Use exactly as directed by a healthcare professional. Regular blood-pressure monitoring may be recommended.",
+    "whenToSeekHelp": "Seek professional advice for severe or unusual symptoms."
+  },
+  {
+    "id": "med-5",
+    "name": "Losartan",
+    "category": "Heart & Blood Pressure",
+    "image": "https://images.unsplash.com/photo-1580281658628-1d0a0e3e0f3b?w=600",
+    "usedFor": ["High blood pressure"],
+    "forms": ["Tablet"],
+    "relatedConditions": ["Hypertension"],
+    "precautions": "Use under professional guidance, particularly if you have kidney problems or take other medicines.",
+    "whenToSeekHelp": "Contact a healthcare professional if you develop concerning symptoms."
+  },
+  {
+    "id": "med-6",
+    "name": "Sumatriptan",
+    "category": "Migraine",
+    "image": "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=600",
+    "usedFor": ["Migraine attacks"],
+    "forms": ["Tablet", "Other formulations depending on product"],
+    "relatedConditions": ["Migraine"],
+    "precautions": "Use only according to professional advice and the product information.",
+    "whenToSeekHelp": "Seek urgent medical attention for severe chest symptoms or symptoms that are unusual for you."
+  },
+  {
+    "id": "med-7",
+    "name": "Ibuprofen",
+    "category": "Fever & Pain",
+    "image": "https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=600",
+    "usedFor": ["Pain", "Inflammation", "Fever"],
+    "forms": ["Tablet", "Capsule", "Liquid"],
+    "relatedConditions": ["Migraine", "Pain and inflammatory conditions"],
+    "precautions": "Some people should avoid or use caution with this type of medicine. Follow the product label or ask a healthcare professional.",
+    "whenToSeekHelp": "Seek professional advice for severe symptoms or signs of an adverse reaction."
+  },
+  {
+    "id": "med-8",
+    "name": "Omeprazole",
+    "category": "Digestive Health",
+    "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600",
+    "usedFor": ["Heartburn", "Acid reflux"],
+    "forms": ["Capsule", "Tablet"],
+    "relatedConditions": ["Acid Reflux (GERD)"],
+    "precautions": "Use according to the product information or professional advice, especially if symptoms continue.",
+    "whenToSeekHelp": "Seek professional advice if symptoms persist, become severe, or are associated with warning signs."
+  }
+]
+
