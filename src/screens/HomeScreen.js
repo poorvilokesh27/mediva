@@ -10,7 +10,6 @@ import {
   Keyboard,
 } from "react-native";
 
-import localData from "../data/medicineData.json";
 import { searchMedicines } from "../services/medicineService";
 import { addHistory, getHistory } from "../services/historyService";
 import { useAuth } from "../context/AuthContext";
@@ -30,28 +29,39 @@ export default function HomeScreen({ navigation }) {
   async function loadRecentSearches() {
     if (!user) return;
 
-    const history = await getHistory(user.id);
+    try {
+      const history = await getHistory(user.id);
 
-    const searches = history
-      .filter((item) => item.type === "search")
-      .slice(0, 5);
+      const searches = history
+        .filter((item) => item.type === "search")
+        .slice(0, 5);
 
-    setRecentSearches(searches);
+      setRecentSearches(searches);
+    } catch (error) {
+      console.log("Recent searches error:", error);
+      setRecentSearches([]);
+    }
   }
 
-  async function handleSearch() {
-    const text = query.trim();
+  async function handleSearch(searchText = query) {
+    const text = String(searchText).trim();
 
     if (!text) {
       return;
     }
 
+    setQuery(text);
     Keyboard.dismiss();
     setSearching(true);
 
     try {
+      console.log("Searching for:", text);
+
       const data = await searchMedicines(text);
-      setResults(data);
+
+      console.log("Search results received:", data);
+
+      setResults(Array.isArray(data) ? data : []);
 
       if (user) {
         await addHistory(user.id, "search", text);
@@ -60,9 +70,9 @@ export default function HomeScreen({ navigation }) {
     } catch (error) {
       console.log("Search error:", error);
       setResults([]);
+    } finally {
+      setSearching(false);
     }
-
-    setSearching(false);
   }
 
   function openMedicine(item) {
@@ -133,26 +143,26 @@ export default function HomeScreen({ navigation }) {
   ];
 
   function searchFromCard(text) {
-    setQuery(text);
-
-    setTimeout(() => {
-      handleSearch();
-    }, 100);
+    handleSearch(text);
   }
 
   return (
     <View style={styles.container}>
       <ScrollView
+        style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={styles.scrollContent}
       >
-
         {/* HEADER */}
         <View style={styles.header}>
           <View>
             <Text style={styles.welcome}>Welcome to</Text>
-            <Text style={styles.logo}>💊 MediPal</Text>
+
+            <Text style={styles.logo}>
+              💊 MediPal
+            </Text>
+
             <Text style={styles.subtitle}>
               Your health information companion
             </Text>
@@ -173,21 +183,30 @@ export default function HomeScreen({ navigation }) {
             placeholder="Search medicine or disease..."
             placeholderTextColor="#888"
             value={query}
-            onChangeText={setQuery}
+            onChangeText={(text) => {
+              setQuery(text);
+
+              if (text.trim() === "") {
+                setResults([]);
+              }
+            }}
             autoCapitalize="none"
+            autoCorrect={false}
             returnKeyType="search"
-            onSubmitEditing={handleSearch}
+            onSubmitEditing={() => handleSearch(query)}
           />
 
           <TouchableOpacity
             style={styles.searchButton}
-            onPress={handleSearch}
+            onPress={() => handleSearch(query)}
           >
-            <Text style={styles.searchButtonText}>🔎</Text>
+            <Text style={styles.searchButtonText}>
+              🔎
+            </Text>
           </TouchableOpacity>
         </View>
 
-        {/* SEARCH RESULTS */}
+        {/* LOADING */}
         {searching && (
           <ActivityIndicator
             size="small"
@@ -196,6 +215,7 @@ export default function HomeScreen({ navigation }) {
           />
         )}
 
+        {/* SEARCH RESULTS */}
         {!searching && results.length > 0 && (
           <View>
             <Text style={styles.sectionTitle}>
@@ -204,37 +224,48 @@ export default function HomeScreen({ navigation }) {
 
             {results.map((item, index) => (
               <TouchableOpacity
-                key={item.id?.toString() || index.toString()}
+                key={
+                  item.id?.toString() ||
+                  index.toString()
+                }
                 style={styles.resultCard}
                 onPress={() => openMedicine(item)}
+                activeOpacity={0.8}
               >
                 <View style={styles.resultIcon}>
-                  <Text style={styles.medicineEmoji}>💊</Text>
+                  <Text style={styles.medicineEmoji}>
+                    💊
+                  </Text>
                 </View>
 
                 <View style={styles.resultInfo}>
                   <Text style={styles.resultTitle}>
-                    {item.disease}
+                    {item.disease || item.name || "Medicine"}
                   </Text>
 
                   <Text style={styles.resultCategory}>
-                    {item.category}
+                    {item.category || "General health"}
                   </Text>
 
                   <Text
                     style={styles.resultSymptoms}
                     numberOfLines={2}
                   >
-                    {item.symptoms?.join(", ")}
+                    {Array.isArray(item.symptoms)
+                      ? item.symptoms.join(", ")
+                      : ""}
                   </Text>
                 </View>
 
-                <Text style={styles.arrow}>›</Text>
+                <Text style={styles.arrow}>
+                  ›
+                </Text>
               </TouchableOpacity>
             ))}
           </View>
         )}
 
+        {/* NO RESULTS */}
         {!searching &&
           query.trim().length > 0 &&
           results.length === 0 && (
@@ -243,9 +274,10 @@ export default function HomeScreen({ navigation }) {
             </Text>
           )}
 
-        {/* POPULAR MEDICINES */}
+        {/* HOME CONTENT */}
         {query.trim().length === 0 && (
           <>
+            {/* POPULAR MEDICINES */}
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>
                 ⭐ Popular medicines
@@ -261,7 +293,10 @@ export default function HomeScreen({ navigation }) {
                 <TouchableOpacity
                   key={medicine.name}
                   style={styles.popularCard}
-                  onPress={() => searchFromCard(medicine.name)}
+                  onPress={() =>
+                    searchFromCard(medicine.name)
+                  }
+                  activeOpacity={0.8}
                 >
                   <View style={styles.popularIcon}>
                     <Text style={styles.popularEmoji}>
@@ -294,7 +329,10 @@ export default function HomeScreen({ navigation }) {
                 <TouchableOpacity
                   key={category.name}
                   style={styles.categoryCard}
-                  onPress={() => searchFromCard(category.search)}
+                  onPress={() =>
+                    searchFromCard(category.search)
+                  }
+                  activeOpacity={0.8}
                 >
                   <Text style={styles.categoryIcon}>
                     {category.icon}
@@ -323,9 +361,14 @@ export default function HomeScreen({ navigation }) {
                 <TouchableOpacity
                   key={item.id}
                   style={styles.historyCard}
-                  onPress={() => searchFromCard(item.content)}
+                  onPress={() =>
+                    searchFromCard(item.content)
+                  }
+                  activeOpacity={0.8}
                 >
-                  <Text style={styles.historyIcon}>🔎</Text>
+                  <Text style={styles.historyIcon}>
+                    🔎
+                  </Text>
 
                   <View>
                     <Text style={styles.historyText}>
@@ -342,7 +385,9 @@ export default function HomeScreen({ navigation }) {
 
             {/* REMINDERS */}
             <View style={styles.featureCard}>
-              <Text style={styles.featureIcon}>⏰</Text>
+              <Text style={styles.featureIcon}>
+                ⏰
+              </Text>
 
               <View style={styles.featureText}>
                 <Text style={styles.featureTitle}>
@@ -355,7 +400,9 @@ export default function HomeScreen({ navigation }) {
               </View>
 
               <TouchableOpacity
-                onPress={() => navigation.navigate("Reminders")}
+                onPress={() =>
+                  navigation.navigate("Reminders")
+                }
               >
                 <Text style={styles.featureButton}>
                   Open
@@ -366,11 +413,16 @@ export default function HomeScreen({ navigation }) {
             {/* CHATBOT */}
             <TouchableOpacity
               style={styles.chatCard}
-              onPress={() => navigation.navigate("Chatbot")}
+              onPress={() =>
+                navigation.navigate("Chatbot")
+              }
+              activeOpacity={0.85}
             >
-              <Text style={styles.chatIcon}>💬</Text>
+              <Text style={styles.chatIcon}>
+                💬
+              </Text>
 
-              <View style={{ flex: 1 }}>
+              <View style={styles.chatTextContainer}>
                 <Text style={styles.chatTitle}>
                   Ask MediPal
                 </Text>
@@ -380,11 +432,12 @@ export default function HomeScreen({ navigation }) {
                 </Text>
               </View>
 
-              <Text style={styles.chatArrow}>›</Text>
+              <Text style={styles.chatArrow}>
+                ›
+              </Text>
             </TouchableOpacity>
           </>
         )}
-
       </ScrollView>
     </View>
   );
@@ -397,7 +450,7 @@ const styles = StyleSheet.create({
   },
 
   scrollContent: {
-    paddingBottom: 100,
+    paddingBottom: 120,
   },
 
   header: {
@@ -695,6 +748,10 @@ const styles = StyleSheet.create({
   chatIcon: {
     fontSize: 30,
     marginRight: 13,
+  },
+
+  chatTextContainer: {
+    flex: 1,
   },
 
   chatTitle: {
