@@ -1,10 +1,4 @@
-
 import React from "react";
-import {
-  ActivityIndicator,
-  View,
-  Text,
-} from "react-native";
 
 import {
   NavigationContainer,
@@ -18,147 +12,199 @@ import {
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
 
-import { useAuth } from "../context/AuthContext";
+import { Ionicons } from "@expo/vector-icons";
+
+import HomeScreen from "../screens/HomeScreen";
+import MedicineDetailScreen from "../screens/MedicineDetailScreen";
+import FavoriteScreen from "../screens/FavoriteScreen";
+import RemindersScreen from "../screens/RemindersScreen";
+import ChatbotScreen from "../screens/ChatbotScreen";
+import SearchScreen from "../screens/SearchScreen";
+import SettingsScreen from "../screens/SettingsScreen";
 
 import SignInScreen from "../screens/SignInScreen";
 import SignUpScreen from "../screens/SignUpScreen";
-import HomeScreen from "../screens/HomeScreen";
-import MedicineDetailScreen from "../screens/MedicineDetailScreen";
-import ChatbotScreen from "../screens/ChatbotScreen";
-import HistoryScreen from "../screens/HistoryScreen";
-import RemindersScreen from "../screens/RemindersScreen";
+
 import ProfileScreen from "../screens/ProfileScreen";
+import HistoryScreen from "../screens/HistoryScreen";
 
-const AuthStack = createNativeStackNavigator();
-const HomeStack = createNativeStackNavigator();
+import { useAuth } from "../context/AuthContext";
+
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-
-function AuthNavigator() {
-  return (
-    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
-      <AuthStack.Screen
-        name="SignIn"
-        component={SignInScreen}
-      />
-
-      <AuthStack.Screen
-        name="SignUp"
-        component={SignUpScreen}
-      />
-    </AuthStack.Navigator>
-  );
-}
-
-function HomeStackNavigator() {
-  return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen
-        name="Search"
-        component={HomeScreen}
-        options={{ headerShown: false }}
-      />
-
-      <HomeStack.Screen
-        name="MedicineDetail"
-        component={MedicineDetailScreen}
-        options={{ title: "" }}
-      />
-    </HomeStack.Navigator>
-  );
-}
-
-function tabIcon(emoji) {
-  return () => (
-    <Text style={{ fontSize: 20 }}>
-      {emoji}
-    </Text>
-  );
-}
 
 function MainTabs() {
   return (
     <Tab.Navigator
-  screenOptions={{
-    headerShown: false,
-    tabBarActiveTintColor: "#1E88E5",
-    tabBarStyle: {
-      height: 65,
-      paddingBottom: 8,
-      paddingTop: 5,
-    },
-  }}
->
+      initialRouteName="Home"
+      screenOptions={({ route }) => ({
+        headerShown: false,
+
+        tabBarActiveTintColor: "#2563EB",
+        tabBarInactiveTintColor: "#8A94A6",
+
+        tabBarStyle: {
+          height: 68,
+          paddingBottom: 8,
+          paddingTop: 6,
+          borderTopWidth: 1,
+          borderTopColor: "#E5E7EB",
+          backgroundColor: "#FFFFFF",
+        },
+
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: "600",
+        },
+
+        tabBarIcon: ({ focused, color }) => {
+
+          let iconName;
+
+          switch (route.name) {
+
+            case "Home":
+              iconName = focused
+                ? "home"
+                : "home-outline";
+              break;
+
+            case "Favorites":
+              iconName = focused
+                ? "heart"
+                : "heart-outline";
+              break;
+
+            case "Reminders":
+              iconName = focused
+                ? "alarm"
+                : "alarm-outline";
+              break;
+
+            case "History":
+              iconName = focused
+                ? "time"
+                : "time-outline";
+              break;
+
+            case "Profile":
+              iconName = focused
+                ? "person-circle"
+                : "person-circle-outline";
+              break;
+
+            default:
+              iconName = "ellipse-outline";
+          }
+
+          return (
+            <Ionicons
+              name={iconName}
+              size={focused ? 25 : 23}
+              color={color}
+            />
+          );
+        },
+      })}
+    >
+
       <Tab.Screen
         name="Home"
-        component={HomeStackNavigator}
-        options={{
-          tabBarIcon: tabIcon("🏠"),
-          title: "Home",
-        }}
+        component={HomeScreen}
       />
 
       <Tab.Screen
-        name="Chatbot"
-        component={ChatbotScreen}
-        options={{
-          headerShown: true,
-          title: "Chat Assistant",
-          tabBarIcon: tabIcon("💬"),
-        }}
+        name="Favorites"
+        component={FavoriteScreen}
       />
 
       <Tab.Screen
         name="Reminders"
         component={RemindersScreen}
-        options={{
-          tabBarIcon: tabIcon("⏰"),
-        }}
       />
 
       <Tab.Screen
         name="History"
         component={HistoryScreen}
-        options={{
-          tabBarIcon: tabIcon("🕘"),
-        }}
       />
 
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
-        options={{
-          headerShown: true,
-          tabBarIcon: tabIcon("👤"),
-        }}
       />
+
     </Tab.Navigator>
   );
 }
 
 export default function AppNavigator() {
-  const { session, loading } = useAuth();
+
+  const { user, loading } = useAuth();
 
   if (loading) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <ActivityIndicator
-          size="large"
-          color="#1E88E5"
-        />
-      </View>
-    );
+    return null;
   }
 
   return (
     <NavigationContainer>
-      {session ? <MainTabs /> : <AuthNavigator />}
+
+      {!user ? (
+
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+
+          <Stack.Screen
+            name="Login"
+            component={SignInScreen}
+          />
+
+          <Stack.Screen
+            name="SignUp"
+            component={SignUpScreen}
+          />
+
+        </Stack.Navigator>
+
+      ) : (
+
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+
+          <Stack.Screen
+            name="MainTabs"
+            component={MainTabs}
+          />
+
+          <Stack.Screen
+            name="Search"
+            component={SearchScreen}
+          />
+
+          <Stack.Screen
+            name="MedicineDetail"
+            component={MedicineDetailScreen}
+          />
+
+          <Stack.Screen
+            name="Chatbot"
+            component={ChatbotScreen}
+          />
+
+          <Stack.Screen
+            name="Settings"
+            component={SettingsScreen}
+          />
+
+        </Stack.Navigator>
+
+      )}
+
     </NavigationContainer>
   );
 }
-

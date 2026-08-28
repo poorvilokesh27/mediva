@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import {
   View,
   Text,
@@ -6,95 +7,410 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
 } from "react-native";
-import { useAuth } from "../context/AuthContext";
+
+import { supabase } from "../config/supabase";
 
 export default function SignUpScreen({ navigation }) {
-  const { signUp } = useAuth();
-  const [fullName, setFullName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   const [loading, setLoading] = useState(false);
 
   const handleSignUp = async () => {
-    if (!fullName || !email || !password) {
-      Alert.alert("Missing info", "Please fill in all fields.");
+    const cleanName = name.trim();
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (!cleanName) {
+      Alert.alert(
+        "Missing name",
+        "Please enter your name."
+      );
       return;
     }
+
+    if (!cleanEmail) {
+      Alert.alert(
+        "Missing email",
+        "Please enter your email."
+      );
+      return;
+    }
+
+    if (!password) {
+      Alert.alert(
+        "Missing password",
+        "Please enter a password."
+      );
+      return;
+    }
+
     if (password.length < 6) {
-      Alert.alert("Weak password", "Password must be at least 6 characters.");
+      Alert.alert(
+        "Password too short",
+        "Password must contain at least 6 characters."
+      );
       return;
     }
-    setLoading(true);
-    const { error } = await signUp(email, password, fullName);
-    setLoading(false);
-    if (error) {
-      Alert.alert("Sign up failed", error.message);
-    } else {
-      Alert.alert("Almost there", "Check your email to confirm your account, then sign in.");
-      navigation.navigate("SignIn");
+
+    if (password !== confirmPassword) {
+      Alert.alert(
+        "Passwords do not match",
+        "Please enter the same password twice."
+      );
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      console.log("CREATING MEDIPAL ACCOUNT...");
+
+      const { data, error } =
+        await supabase.auth.signUp({
+          email: cleanEmail,
+          password: password,
+
+          options: {
+            data: {
+              full_name: cleanName,
+              name: cleanName,
+            },
+          },
+        });
+
+      console.log("SIGN UP RESPONSE:", {
+        user: data?.user,
+        session: data?.session,
+        error: error?.message,
+      });
+
+      if (error) {
+        Alert.alert(
+          "Account creation failed",
+          error.message
+        );
+        return;
+      }
+
+      /*
+       * If email confirmation is enabled,
+       * Supabase normally returns user but no session.
+       */
+
+      if (data?.user && !data?.session) {
+
+        Alert.alert(
+          "Account created!",
+          "We sent a verification email to:\n\n" +
+            cleanEmail +
+            "\n\nPlease verify your email and then sign in.",
+          [
+            {
+              text: "Go to Login",
+              onPress: () =>
+                navigation.replace("Login"),
+            },
+          ]
+        );
+
+        return;
+      }
+
+      /*
+       * If email confirmation is disabled,
+       * Supabase may immediately create a session.
+       */
+
+      if (data?.session) {
+        Alert.alert(
+          "Account created!",
+          "Your Medipal account has been created.",
+          [
+            {
+              text: "Continue",
+              onPress: () =>
+                navigation.replace("Login"),
+            },
+          ]
+        );
+
+        return;
+      }
+
+    } catch (error) {
+      console.log(
+        "SIGN UP EXCEPTION:",
+        error
+      );
+
+      Alert.alert(
+        "Sign up failed",
+        error?.message ||
+          "Something went wrong."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      behavior={
+        Platform.OS === "ios"
+          ? "padding"
+          : undefined
+      }
     >
-      <Text style={styles.logo}>Create Account</Text>
-      <Text style={styles.subtitle}>Join MediPal</Text>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
 
-      <TextInput style={styles.input} placeholder="Full name" value={fullName} onChangeText={setFullName} />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        autoCapitalize="none"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
+        <View style={styles.logoBox}>
+          <Text style={styles.logo}>💊</Text>
+        </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleSignUp} disabled={loading}>
-        <Text style={styles.buttonText}>{loading ? "Creating account..." : "Sign Up"}</Text>
-      </TouchableOpacity>
+        <Text style={styles.title}>
+          Create your Medipal account
+        </Text>
 
-      <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
-        <Text style={styles.link}>Already have an account? Sign In</Text>
-      </TouchableOpacity>
+        <Text style={styles.subtitle}>
+          Start managing your medicine companion
+        </Text>
+
+        <View style={styles.card}>
+
+          <Text style={styles.cardTitle}>
+            Sign up
+          </Text>
+
+          <Text style={styles.cardSubtitle}>
+            Create an account to continue
+          </Text>
+
+          <Text style={styles.label}>
+            Name
+          </Text>
+
+          <TextInput
+            style={styles.input}
+            value={name}
+            onChangeText={setName}
+            placeholder="Enter your name"
+            placeholderTextColor="#9AA3AF"
+            autoCapitalize="words"
+            editable={!loading}
+          />
+
+          <Text style={styles.label}>
+            Email
+          </Text>
+
+          <TextInput
+            style={styles.input}
+            value={email}
+            onChangeText={setEmail}
+            placeholder="Enter your email"
+            placeholderTextColor="#9AA3AF"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            editable={!loading}
+          />
+
+          <Text style={styles.label}>
+            Password
+          </Text>
+
+          <TextInput
+            style={styles.input}
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Create a password"
+            placeholderTextColor="#9AA3AF"
+            secureTextEntry
+            autoCapitalize="none"
+            editable={!loading}
+          />
+
+          <Text style={styles.label}>
+            Confirm Password
+          </Text>
+
+          <TextInput
+            style={styles.input}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            placeholder="Confirm your password"
+            placeholderTextColor="#9AA3AF"
+            secureTextEntry
+            autoCapitalize="none"
+            editable={!loading}
+            onSubmitEditing={handleSignUp}
+          />
+
+          <TouchableOpacity
+            style={styles.signupButton}
+            onPress={handleSignUp}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator color="#FFFFFF" />
+            ) : (
+              <Text style={styles.buttonText}>
+                Create Account
+              </Text>
+            )}
+          </TouchableOpacity>
+
+          <View style={styles.signinRow}>
+
+            <Text style={styles.signinText}>
+              Already have an account?
+            </Text>
+
+            <TouchableOpacity
+              onPress={() =>
+                navigation.replace("Login")
+              }
+              disabled={loading}
+            >
+              <Text style={styles.signinLink}>
+                Sign In
+              </Text>
+            </TouchableOpacity>
+
+          </View>
+
+        </View>
+
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", padding: 24, backgroundColor: "#F5F7FA" },
-  logo: { fontSize: 28, fontWeight: "800", color: "#1E88E5", textAlign: "center" },
-  subtitle: { fontSize: 15, color: "#666", textAlign: "center", marginBottom: 32 },
-  input: {
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    marginBottom: 14,
-    fontSize: 16,
-    borderWidth: 1,
-    borderColor: "#E0E0E0",
+  container: {
+    flex: 1,
+    backgroundColor: "#F5F7FA",
   },
-  button: {
+
+  content: {
+    flexGrow: 1,
+    justifyContent: "center",
+    padding: 20,
+  },
+
+  logoBox: {
+    width: 70,
+    height: 70,
+    borderRadius: 20,
     backgroundColor: "#1E88E5",
-    borderRadius: 10,
-    paddingVertical: 15,
+    alignSelf: "center",
     alignItems: "center",
-    marginTop: 8,
+    justifyContent: "center",
+    marginBottom: 13,
+    elevation: 4,
   },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "700" },
-  link: { color: "#1E88E5", textAlign: "center", marginTop: 18, fontSize: 14 },
+
+  logo: {
+    fontSize: 36,
+  },
+
+  title: {
+    textAlign: "center",
+    color: "#1E88E5",
+    fontSize: 24,
+    fontWeight: "800",
+  },
+
+  subtitle: {
+    textAlign: "center",
+    color: "#7B8492",
+    fontSize: 13,
+    marginTop: 5,
+    marginBottom: 22,
+  },
+
+  card: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 22,
+    padding: 20,
+    elevation: 3,
+  },
+
+  cardTitle: {
+    fontSize: 22,
+    fontWeight: "800",
+    color: "#222222",
+  },
+
+  cardSubtitle: {
+    color: "#7B8492",
+    fontSize: 13,
+    marginTop: 4,
+    marginBottom: 18,
+  },
+
+  label: {
+    color: "#333333",
+    fontSize: 13,
+    fontWeight: "700",
+    marginTop: 10,
+    marginBottom: 7,
+  },
+
+  input: {
+    height: 50,
+    backgroundColor: "#F5F7FA",
+    borderRadius: 13,
+    paddingHorizontal: 15,
+    color: "#222222",
+    fontSize: 15,
+    borderWidth: 1,
+    borderColor: "#E1E6EC",
+  },
+
+  signupButton: {
+    height: 52,
+    backgroundColor: "#1E88E5",
+    borderRadius: 13,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 23,
+  },
+
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "800",
+  },
+
+  signinRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+  },
+
+  signinText: {
+    color: "#777777",
+    fontSize: 13,
+  },
+
+  signinLink: {
+    color: "#1E88E5",
+    fontSize: 13,
+    fontWeight: "800",
+    marginLeft: 5,
+  },
 });

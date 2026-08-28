@@ -1,62 +1,1202 @@
 [
   {
-    "id": "1",
-    "disease": "Common Cold",
-    "category": "Respiratory",
-    "symptoms": ["Runny nose", "Sore throat", "Cough", "Mild fever"],
-    "medicines": [
-      { "name": "Paracetamol", "dosage": "500mg every 6-8 hours", "notes": "For fever and body ache" },
-      { "name": "Cetirizine", "dosage": "10mg once daily", "notes": "For runny nose and sneezing" }
-    ],
-    "precautions": "Stay hydrated, rest well. See a doctor if fever exceeds 3 days.",
-    "disclaimer": "General information only, not a prescription."
+    "name": "Cetirizine",
+    "category": "Allergy",
+    "subcategory": "Non-Drowsy Antihistamine",
+    "use": "Used for allergy symptoms such as sneezing, runny nose, itching and watery eyes.",
+    "precautions": "May cause drowsiness in some people."
   },
   {
-    "id": "2",
-    "disease": "Type 2 Diabetes",
-    "category": "Endocrine",
-    "symptoms": ["Frequent urination", "Increased thirst", "Fatigue", "Blurred vision"],
-    "medicines": [
-      { "name": "Metformin", "dosage": "500mg-1000mg twice daily", "notes": "Taken with meals" },
-      { "name": "Glimepiride", "dosage": "As prescribed", "notes": "Monitor blood sugar regularly" }
-    ],
-    "precautions": "Requires ongoing doctor supervision and regular blood sugar monitoring.",
-    "disclaimer": "General information only, not a prescription."
+    "name": "Loratadine",
+    "category": "Allergy",
+    "subcategory": "Non-Drowsy Antihistamine",
+    "use": "Used to relieve allergy symptoms including sneezing, runny nose and itching.",
+    "precautions": "Usually causes little drowsiness, but individual reactions can vary."
   },
   {
-    "id": "3",
-    "disease": "Hypertension",
+    "name": "Fexofenadine",
+    "category": "Allergy",
+    "subcategory": "Non-Drowsy Antihistamine",
+    "use": "Used for allergic rhinitis and allergy-related itching.",
+    "precautions": "Follow the product or professional instructions."
+  },
+  {
+    "name": "Desloratadine",
+    "category": "Allergy",
+    "subcategory": "Non-Drowsy Antihistamine",
+    "use": "Used to relieve symptoms of allergic rhinitis and hives.",
+    "precautions": "Use according to professional or product guidance."
+  },
+  {
+    "name": "Levocetirizine",
+    "category": "Allergy",
+    "subcategory": "Non-Drowsy Antihistamine",
+    "use": "Used for allergy symptoms and hives.",
+    "precautions": "May cause sleepiness in some people."
+  },
+  {
+    "name": "Acrivastine",
+    "category": "Allergy",
+    "subcategory": "Antihistamine",
+    "use": "Used for temporary relief of allergy symptoms.",
+    "precautions": "May cause drowsiness."
+  },
+  {
+    "name": "Diphenhydramine",
+    "category": "Allergy",
+    "subcategory": "Drowsy Antihistamine",
+    "use": "Used for allergy symptoms and itching.",
+    "precautions": "Can cause significant drowsiness."
+  },
+  {
+    "name": "Chlorpheniramine",
+    "category": "Allergy",
+    "subcategory": "Drowsy Antihistamine",
+    "use": "Used for allergy symptoms such as sneezing and runny nose.",
+    "precautions": "May cause drowsiness."
+  },
+  {
+    "name": "Hydroxyzine",
+    "category": "Allergy",
+    "subcategory": "Drowsy Antihistamine",
+    "use": "Used for itching and certain allergic conditions.",
+    "precautions": "Can cause drowsiness."
+  },
+  {
+    "name": "Brompheniramine",
+    "category": "Allergy",
+    "subcategory": "Drowsy Antihistamine",
+    "use": "Used for allergy and cold-related symptoms.",
+    "precautions": "May cause drowsiness."
+  },
+  {
+    "name": "Promethazine",
+    "category": "Allergy",
+    "subcategory": "Drowsy Antihistamine",
+    "use": "Used for certain allergic symptoms and nausea.",
+    "precautions": "Can cause significant drowsiness."
+  },
+
+  {
+    "name": "Acetaminophen",
+    "category": "Pain Fever & Inflammation",
+    "subcategory": "Analgesic",
+    "use": "Used for mild to moderate pain and fever.",
+    "precautions": "Too much can seriously damage the liver."
+  },
+  {
+    "name": "Paracetamol",
+    "category": "Pain Fever & Inflammation",
+    "subcategory": "Analgesic",
+    "use": "Used to relieve pain and reduce fever.",
+    "precautions": "Do not exceed the recommended amount."
+  },
+  {
+    "name": "Ibuprofen",
+    "category": "Pain Fever & Inflammation",
+    "subcategory": "NSAID",
+    "use": "Used for pain, fever and inflammation.",
+    "precautions": "NSAIDs can cause stomach irritation and other side effects."
+  },
+  {
+    "name": "Naproxen",
+    "category": "Pain Fever & Inflammation",
+    "subcategory": "NSAID",
+    "use": "Used for pain and inflammation.",
+    "precautions": "Can cause stomach and other NSAID-related side effects."
+  },
+  {
+    "name": "Aspirin",
+    "category": "Pain Fever & Inflammation",
+    "subcategory": "NSAID",
+    "use": "Used for pain and inflammation and, under medical guidance, prevention of certain blood clots.",
+    "precautions": "Not recommended for children with fever because of the risk of Reye syndrome."
+  },
+  {
+    "name": "Ketoprofen",
+    "category": "Pain Fever & Inflammation",
+    "subcategory": "NSAID",
+    "use": "Used to reduce pain and inflammation.",
+    "precautions": "May cause stomach irritation and other NSAID-related effects."
+  },
+  {
+    "name": "Diclofenac",
+    "category": "Pain Fever & Inflammation",
+    "subcategory": "NSAID",
+    "use": "Used for pain and inflammation.",
+    "precautions": "Use carefully because NSAIDs can have stomach, kidney and cardiovascular risks."
+  },
+  {
+    "name": "Ketorolac",
+    "category": "Pain Fever & Inflammation",
+    "subcategory": "NSAID",
+    "use": "Used for short-term treatment of moderate to severe pain.",
+    "precautions": "Generally intended for short-term use because of important NSAID risks."
+  },
+  {
+    "name": "Celecoxib",
+    "category": "Pain Fever & Inflammation",
+    "subcategory": "COX-2 Inhibitor",
+    "use": "Used to reduce pain and inflammation.",
+    "precautions": "Prescription medicine with important cardiovascular and other precautions."
+  },
+  {
+    "name": "Indomethacin",
+    "category": "Anti-Inflammatory",
+    "subcategory": "NSAID",
+    "use": "Used to reduce pain and inflammation.",
+    "precautions": "Can cause stomach and other NSAID-related side effects."
+  },
+  {
+    "name": "Meloxicam",
+    "category": "Anti-Inflammatory",
+    "subcategory": "NSAID",
+    "use": "Used for pain and inflammation.",
+    "precautions": "Use only according to professional guidance."
+  },
+  {
+    "name": "Piroxicam",
+    "category": "Anti-Inflammatory",
+    "subcategory": "NSAID",
+    "use": "Used for inflammatory pain.",
+    "precautions": "Can cause gastrointestinal and other NSAID-related effects."
+  },
+
+  {
+    "name": "Amoxicillin",
+    "category": "Anti-Infectives",
+    "subcategory": "Antibiotic - Penicillin",
+    "use": "Used to treat certain bacterial infections.",
+    "precautions": "Antibiotics do not treat viral infections. Use only when prescribed or appropriately advised."
+  },
+  {
+    "name": "Ampicillin",
+    "category": "Anti-Infectives",
+    "subcategory": "Antibiotic - Penicillin",
+    "use": "Used to treat certain bacterial infections.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Benzylpenicillin",
+    "category": "Anti-Infectives",
+    "subcategory": "Antibiotic - Penicillin",
+    "use": "Used for certain serious bacterial infections.",
+    "precautions": "Usually administered under professional medical supervision."
+  },
+  {
+    "name": "Flucloxacillin",
+    "category": "Anti-Infectives",
+    "subcategory": "Antibiotic - Penicillin",
+    "use": "Used for certain bacterial infections.",
+    "precautions": "Use only when appropriately prescribed."
+  },
+  {
+    "name": "Cephalexin",
+    "category": "Anti-Infectives",
+    "subcategory": "Cephalosporin Antibiotic",
+    "use": "Used to treat certain bacterial infections.",
+    "precautions": "Complete treatment as directed by the prescriber."
+  },
+  {
+    "name": "Cefuroxime",
+    "category": "Anti-Infectives",
+    "subcategory": "Cephalosporin Antibiotic",
+    "use": "Used for certain bacterial infections.",
+    "precautions": "Use only for appropriate bacterial infections."
+  },
+  {
+    "name": "Ceftriaxone",
+    "category": "Anti-Infectives",
+    "subcategory": "Cephalosporin Antibiotic",
+    "use": "Used for certain serious bacterial infections.",
+    "precautions": "Usually administered by healthcare professionals."
+  },
+  {
+    "name": "Cefepime",
+    "category": "Anti-Infectives",
+    "subcategory": "Cephalosporin Antibiotic",
+    "use": "Used for serious bacterial infections.",
+    "precautions": "Usually used under medical supervision."
+  },
+  {
+    "name": "Meropenem",
+    "category": "Anti-Infectives",
+    "subcategory": "Carbapenem Antibiotic",
+    "use": "Used for serious bacterial infections.",
+    "precautions": "Reserved for appropriate infections and generally administered under medical supervision."
+  },
+  {
+    "name": "Imipenem",
+    "category": "Anti-Infectives",
+    "subcategory": "Carbapenem Antibiotic",
+    "use": "Used for serious bacterial infections.",
+    "precautions": "Requires professional medical supervision."
+  },
+  {
+    "name": "Ertapenem",
+    "category": "Anti-Infectives",
+    "subcategory": "Carbapenem Antibiotic",
+    "use": "Used for certain serious bacterial infections.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Azithromycin",
+    "category": "Anti-Infectives",
+    "subcategory": "Macrolide Antibiotic",
+    "use": "Used to treat certain bacterial infections.",
+    "precautions": "Does not treat viral infections."
+  },
+  {
+    "name": "Clarithromycin",
+    "category": "Anti-Infectives",
+    "subcategory": "Macrolide Antibiotic",
+    "use": "Used for certain bacterial infections.",
+    "precautions": "Can interact with other medicines."
+  },
+  {
+    "name": "Erythromycin",
+    "category": "Anti-Infectives",
+    "subcategory": "Macrolide Antibiotic",
+    "use": "Used for certain bacterial infections.",
+    "precautions": "May interact with other medicines."
+  },
+  {
+    "name": "Gentamicin",
+    "category": "Anti-Infectives",
+    "subcategory": "Aminoglycoside",
+    "use": "Used for certain serious bacterial infections.",
+    "precautions": "Requires medical supervision because of potential kidney and hearing-related toxicity."
+  },
+  {
+    "name": "Tobramycin",
+    "category": "Anti-Infectives",
+    "subcategory": "Aminoglycoside",
+    "use": "Used for certain bacterial infections.",
+    "precautions": "Requires professional monitoring."
+  },
+  {
+    "name": "Amikacin",
+    "category": "Anti-Infectives",
+    "subcategory": "Aminoglycoside",
+    "use": "Used for serious bacterial infections.",
+    "precautions": "Requires medical supervision."
+  },
+  {
+    "name": "Doxycycline",
+    "category": "Anti-Infectives",
+    "subcategory": "Tetracycline Antibiotic",
+    "use": "Used for several bacterial infections and some skin conditions.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Minocycline",
+    "category": "Anti-Infectives",
+    "subcategory": "Tetracycline Antibiotic",
+    "use": "Used for certain bacterial infections and acne.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Tetracycline",
+    "category": "Anti-Infectives",
+    "subcategory": "Tetracycline Antibiotic",
+    "use": "Used for certain bacterial infections.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Ciprofloxacin",
+    "category": "Anti-Infectives",
+    "subcategory": "Fluoroquinolone",
+    "use": "Used for selected bacterial infections.",
+    "precautions": "Fluoroquinolones have important safety precautions and should be used appropriately."
+  },
+  {
+    "name": "Levofloxacin",
+    "category": "Anti-Infectives",
+    "subcategory": "Fluoroquinolone",
+    "use": "Used for selected bacterial infections.",
+    "precautions": "Has important safety warnings."
+  },
+  {
+    "name": "Ofloxacin",
+    "category": "Anti-Infectives",
+    "subcategory": "Fluoroquinolone",
+    "use": "Used for selected bacterial infections.",
+    "precautions": "Use only when appropriate."
+  },
+  {
+    "name": "Vancomycin",
+    "category": "Anti-Infectives",
+    "subcategory": "Glycopeptide Antibiotic",
+    "use": "Used for certain serious bacterial infections.",
+    "precautions": "Usually administered and monitored by healthcare professionals."
+  },
+  {
+    "name": "Metronidazole",
+    "category": "Anti-Infectives",
+    "subcategory": "Antibacterial / Antiprotozoal",
+    "use": "Used for certain bacterial and protozoal infections.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Mebendazole",
+    "category": "Anti-Infectives",
+    "subcategory": "Antiparasitic",
+    "use": "Used to treat certain intestinal worm infections.",
+    "precautions": "Use according to product or professional guidance."
+  },
+
+  {
+    "name": "Acyclovir",
+    "category": "Anti-Infectives",
+    "subcategory": "Antiviral",
+    "use": "Used for certain herpes virus infections.",
+    "precautions": "Works against specific viruses and should be used appropriately."
+  },
+  {
+    "name": "Valacyclovir",
+    "category": "Anti-Infectives",
+    "subcategory": "Antiviral",
+    "use": "Used for certain herpes virus infections.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Oseltamivir",
+    "category": "Anti-Infectives",
+    "subcategory": "Antiviral - Influenza",
+    "use": "Used to treat or prevent influenza in appropriate situations.",
+    "precautions": "Effectiveness is generally greatest when started early."
+  },
+  {
+    "name": "Fluconazole",
+    "category": "Anti-Infectives",
+    "subcategory": "Antifungal",
+    "use": "Used to treat certain fungal infections.",
+    "precautions": "Can interact with other medicines."
+  },
+  {
+    "name": "Itraconazole",
+    "category": "Anti-Infectives",
+    "subcategory": "Antifungal",
+    "use": "Used for certain fungal infections.",
+    "precautions": "Has important drug interactions and other precautions."
+  },
+  {
+    "name": "Clotrimazole",
+    "category": "Anti-Infectives",
+    "subcategory": "Antifungal",
+    "use": "Used to treat certain fungal infections.",
+    "precautions": "Use according to product or professional instructions."
+  },
+  {
+    "name": "Terbinafine",
+    "category": "Anti-Infectives",
+    "subcategory": "Antifungal",
+    "use": "Used for certain fungal infections of the skin and nails.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Nystatin",
+    "category": "Anti-Infectives",
+    "subcategory": "Antifungal",
+    "use": "Used to treat certain fungal infections.",
+    "precautions": "Use according to product or professional guidance."
+  },
+
+  {
+    "name": "Captopril",
     "category": "Cardiovascular",
-    "symptoms": ["Headache", "Dizziness", "Chest discomfort", "Often no symptoms"],
-    "medicines": [
-      { "name": "Amlodipine", "dosage": "5mg once daily", "notes": "Take at the same time each day" },
-      { "name": "Losartan", "dosage": "50mg once daily", "notes": "Avoid with certain kidney conditions" }
-    ],
-    "precautions": "Reduce salt intake, exercise, monitor blood pressure regularly.",
-    "disclaimer": "General information only, not a prescription."
+    "subcategory": "ACE Inhibitor",
+    "use": "Used to lower blood pressure and for certain heart conditions.",
+    "precautions": "Can cause low blood pressure and other effects; professional monitoring is important."
   },
   {
-    "id": "4",
-    "disease": "Migraine",
-    "category": "Neurological",
-    "symptoms": ["Throbbing headache", "Nausea", "Light sensitivity"],
-    "medicines": [
-      { "name": "Sumatriptan", "dosage": "As prescribed at onset", "notes": "For acute attacks" },
-      { "name": "Ibuprofen", "dosage": "400mg as needed", "notes": "For mild to moderate pain" }
-    ],
-    "precautions": "Identify and avoid personal triggers like stress or certain foods.",
-    "disclaimer": "General information only, not a prescription."
+    "name": "Enalapril",
+    "category": "Cardiovascular",
+    "subcategory": "ACE Inhibitor",
+    "use": "Used for high blood pressure and certain heart conditions.",
+    "precautions": "May cause cough or low blood pressure."
   },
   {
-    "id": "5",
-    "disease": "Acid Reflux (GERD)",
-    "category": "Digestive",
-    "symptoms": ["Heartburn", "Regurgitation", "Chest discomfort after meals"],
-    "medicines": [
-      { "name": "Omeprazole", "dosage": "20mg once daily before breakfast", "notes": "Reduces stomach acid" },
-      { "name": "Antacid (e.g. Gelusil)", "dosage": "As needed", "notes": "For quick relief" }
-    ],
-    "precautions": "Avoid spicy/oily food, don't lie down right after eating.",
-    "disclaimer": "General information only, not a prescription."
+    "name": "Lisinopril",
+    "category": "Cardiovascular",
+    "subcategory": "ACE Inhibitor",
+    "use": "Used for high blood pressure and certain heart conditions.",
+    "precautions": "May cause cough or other side effects."
+  },
+  {
+    "name": "Ramipril",
+    "category": "Cardiovascular",
+    "subcategory": "ACE Inhibitor",
+    "use": "Used for high blood pressure and cardiovascular conditions.",
+    "precautions": "Use under professional guidance."
+  },
+  {
+    "name": "Losartan",
+    "category": "Cardiovascular",
+    "subcategory": "ARB",
+    "use": "Used to lower blood pressure and for certain heart conditions.",
+    "precautions": "Requires professional guidance."
+  },
+  {
+    "name": "Valsartan",
+    "category": "Cardiovascular",
+    "subcategory": "ARB",
+    "use": "Used for high blood pressure and certain heart conditions.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Amlodipine",
+    "category": "Cardiovascular",
+    "subcategory": "Calcium Channel Blocker",
+    "use": "Used to lower blood pressure and treat certain types of angina.",
+    "precautions": "May cause dizziness or ankle swelling."
+  },
+  {
+    "name": "Nifedipine",
+    "category": "Cardiovascular",
+    "subcategory": "Calcium Channel Blocker",
+    "use": "Used for high blood pressure and certain cardiovascular conditions.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Diltiazem",
+    "category": "Cardiovascular",
+    "subcategory": "Calcium Channel Blocker",
+    "use": "Used for certain blood pressure, angina and heart rhythm conditions.",
+    "precautions": "Can affect heart rate and blood pressure."
+  },
+  {
+    "name": "Verapamil",
+    "category": "Cardiovascular",
+    "subcategory": "Calcium Channel Blocker",
+    "use": "Used for certain heart rhythm and blood pressure conditions.",
+    "precautions": "Can slow heart rate."
+  },
+  {
+    "name": "Metoprolol",
+    "category": "Cardiovascular",
+    "subcategory": "Beta Blocker",
+    "use": "Used for high blood pressure and certain heart conditions.",
+    "precautions": "Can lower heart rate and blood pressure."
+  },
+  {
+    "name": "Atenolol",
+    "category": "Cardiovascular",
+    "subcategory": "Beta Blocker",
+    "use": "Used for high blood pressure and certain heart conditions.",
+    "precautions": "Can slow heart rate."
+  },
+  {
+    "name": "Bisoprolol",
+    "category": "Cardiovascular",
+    "subcategory": "Beta Blocker",
+    "use": "Used for certain cardiovascular conditions.",
+    "precautions": "Use under professional guidance."
+  },
+  {
+    "name": "Propranolol",
+    "category": "Cardiovascular",
+    "subcategory": "Beta Blocker",
+    "use": "Used for several cardiovascular conditions and some other conditions.",
+    "precautions": "Can affect heart rate and blood pressure."
+  },
+  {
+    "name": "Furosemide",
+    "category": "Cardiovascular",
+    "subcategory": "Diuretic",
+    "use": "Used to remove excess fluid and treat certain heart and blood pressure conditions.",
+    "precautions": "Can affect fluid and electrolyte levels."
+  },
+  {
+    "name": "Spironolactone",
+    "category": "Cardiovascular",
+    "subcategory": "Diuretic",
+    "use": "Used for fluid retention and certain heart and blood pressure conditions.",
+    "precautions": "Can increase potassium levels."
+  },
+  {
+    "name": "Amiodarone",
+    "category": "Cardiovascular",
+    "subcategory": "Anti-Arrhythmic",
+    "use": "Used to treat certain abnormal heart rhythms.",
+    "precautions": "Requires medical monitoring because of important potential side effects."
+  },
+  {
+    "name": "Warfarin",
+    "category": "Cardiovascular",
+    "subcategory": "Anticoagulant",
+    "use": "Used to reduce the risk of certain blood clots.",
+    "precautions": "Requires careful monitoring because it can cause bleeding."
+  },
+  {
+    "name": "Heparin",
+    "category": "Cardiovascular",
+    "subcategory": "Anticoagulant",
+    "use": "Used to prevent or treat blood clots.",
+    "precautions": "Can cause bleeding and requires medical supervision."
+  },
+  {
+    "name": "Apixaban",
+    "category": "Cardiovascular",
+    "subcategory": "Anticoagulant",
+    "use": "Used to reduce the risk of certain blood clots.",
+    "precautions": "Can increase bleeding risk."
+  },
+  {
+    "name": "Rivaroxaban",
+    "category": "Cardiovascular",
+    "subcategory": "Anticoagulant",
+    "use": "Used to prevent or treat certain blood clots.",
+    "precautions": "Can increase bleeding risk."
+  },
+  {
+    "name": "Atorvastatin",
+    "category": "Cardiovascular",
+    "subcategory": "Statin",
+    "use": "Used to lower LDL cholesterol and reduce cardiovascular risk.",
+    "precautions": "Requires professional guidance and monitoring when appropriate."
+  },
+  {
+    "name": "Rosuvastatin",
+    "category": "Cardiovascular",
+    "subcategory": "Statin",
+    "use": "Used to lower cholesterol and cardiovascular risk.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Ezetimibe",
+    "category": "Cardiovascular",
+    "subcategory": "Lipid-Lowering Agent",
+    "use": "Used to lower cholesterol.",
+    "precautions": "Usually used under professional guidance."
+  },
+
+  {
+    "name": "Fluoxetine",
+    "category": "CNS",
+    "subcategory": "Antidepressant - SSRI",
+    "use": "Used for certain depressive and anxiety-related conditions.",
+    "precautions": "Prescription medicine; should be used under professional supervision."
+  },
+  {
+    "name": "Sertraline",
+    "category": "CNS",
+    "subcategory": "Antidepressant - SSRI",
+    "use": "Used for certain depression and anxiety-related conditions.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Escitalopram",
+    "category": "CNS",
+    "subcategory": "Antidepressant - SSRI",
+    "use": "Used for depression and certain anxiety disorders.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Paroxetine",
+    "category": "CNS",
+    "subcategory": "Antidepressant - SSRI",
+    "use": "Used for certain depression and anxiety-related conditions.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Venlafaxine",
+    "category": "CNS",
+    "subcategory": "Antidepressant - SNRI",
+    "use": "Used for depression and certain anxiety disorders.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Duloxetine",
+    "category": "CNS",
+    "subcategory": "Antidepressant - SNRI",
+    "use": "Used for certain depression, anxiety and nerve-pain conditions.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Amitriptyline",
+    "category": "CNS",
+    "subcategory": "Tricyclic Antidepressant",
+    "use": "Used for certain depression and some types of chronic or nerve pain.",
+    "precautions": "Can cause drowsiness and other side effects."
+  },
+  {
+    "name": "Risperidone",
+    "category": "CNS",
+    "subcategory": "Antipsychotic",
+    "use": "Used for certain psychiatric conditions.",
+    "precautions": "Prescription medicine requiring professional supervision."
+  },
+  {
+    "name": "Olanzapine",
+    "category": "CNS",
+    "subcategory": "Antipsychotic",
+    "use": "Used for certain psychiatric conditions.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Quetiapine",
+    "category": "CNS",
+    "subcategory": "Antipsychotic",
+    "use": "Used for certain psychiatric conditions.",
+    "precautions": "Can cause drowsiness and other important effects."
+  },
+  {
+    "name": "Aripiprazole",
+    "category": "CNS",
+    "subcategory": "Antipsychotic",
+    "use": "Used for certain psychiatric conditions.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Alprazolam",
+    "category": "CNS",
+    "subcategory": "Benzodiazepine",
+    "use": "Used for certain anxiety and panic disorders.",
+    "precautions": "Can cause drowsiness and dependence; prescription medicine."
+  },
+  {
+    "name": "Lorazepam",
+    "category": "CNS",
+    "subcategory": "Benzodiazepine",
+    "use": "Used for certain anxiety-related conditions and other medical indications.",
+    "precautions": "Can cause drowsiness and dependence."
+  },
+  {
+    "name": "Diazepam",
+    "category": "CNS",
+    "subcategory": "Benzodiazepine",
+    "use": "Used for certain anxiety, muscle-spasm and seizure-related conditions.",
+    "precautions": "Can cause drowsiness and dependence."
+  },
+  {
+    "name": "Clonazepam",
+    "category": "CNS",
+    "subcategory": "Benzodiazepine",
+    "use": "Used for certain seizure and panic disorders.",
+    "precautions": "Prescription medicine with dependence and drowsiness risks."
+  },
+  {
+    "name": "Buspirone",
+    "category": "CNS",
+    "subcategory": "Anxiolytic",
+    "use": "Used for certain anxiety disorders.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Lithium",
+    "category": "CNS",
+    "subcategory": "Mood Stabilizer",
+    "use": "Used for bipolar disorder and certain mood conditions.",
+    "precautions": "Requires regular professional monitoring."
+  },
+  {
+    "name": "Valproic Acid",
+    "category": "CNS",
+    "subcategory": "Anticonvulsant / Mood Stabilizer",
+    "use": "Used for certain seizure disorders and bipolar disorder.",
+    "precautions": "Requires professional supervision and monitoring."
+  },
+  {
+    "name": "Lamotrigine",
+    "category": "CNS",
+    "subcategory": "Anticonvulsant",
+    "use": "Used for certain seizure disorders and bipolar disorder.",
+    "precautions": "Serious skin reactions are possible; medical guidance is important."
+  },
+  {
+    "name": "Carbamazepine",
+    "category": "CNS",
+    "subcategory": "Anticonvulsant",
+    "use": "Used for certain seizure disorders and nerve pain.",
+    "precautions": "Requires professional monitoring."
+  },
+  {
+    "name": "Levetiracetam",
+    "category": "CNS",
+    "subcategory": "Anticonvulsant",
+    "use": "Used to prevent or reduce seizures.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Gabapentin",
+    "category": "CNS",
+    "subcategory": "Anticonvulsant / Nerve Pain",
+    "use": "Used for certain seizures and nerve pain.",
+    "precautions": "Can cause dizziness or drowsiness."
+  },
+  {
+    "name": "Pregabalin",
+    "category": "CNS",
+    "subcategory": "Anticonvulsant / Nerve Pain",
+    "use": "Used for certain nerve pain and seizure conditions.",
+    "precautions": "Can cause dizziness and drowsiness."
+  },
+  {
+    "name": "Topiramate",
+    "category": "CNS",
+    "subcategory": "Anticonvulsant / Migraine Prevention",
+    "use": "Used for certain seizures and migraine prevention.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Sumatriptan",
+    "category": "CNS",
+    "subcategory": "Migraine Medicine",
+    "use": "Used to treat acute migraine attacks.",
+    "precautions": "Not appropriate for everyone; professional advice may be needed."
+  },
+  {
+    "name": "Rizatriptan",
+    "category": "CNS",
+    "subcategory": "Migraine Medicine",
+    "use": "Used to treat acute migraine attacks.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Zolmitriptan",
+    "category": "CNS",
+    "subcategory": "Migraine Medicine",
+    "use": "Used to treat acute migraine attacks.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Donepezil",
+    "category": "CNS",
+    "subcategory": "Cognitive Medicine",
+    "use": "Used to help manage symptoms of Alzheimer's disease.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Memantine",
+    "category": "CNS",
+    "subcategory": "Cognitive Medicine",
+    "use": "Used to help manage symptoms of moderate to severe Alzheimer's disease.",
+    "precautions": "Use under professional supervision."
+  },
+
+  {
+    "name": "Omeprazole",
+    "category": "Gastrointestinal",
+    "subcategory": "Proton Pump Inhibitor",
+    "use": "Used to reduce stomach acid and treat conditions such as heartburn and acid-related disorders.",
+    "precautions": "Long-term use should be discussed with a healthcare professional."
+  },
+  {
+    "name": "Esomeprazole",
+    "category": "Gastrointestinal",
+    "subcategory": "Proton Pump Inhibitor",
+    "use": "Used to reduce stomach acid.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Pantoprazole",
+    "category": "Gastrointestinal",
+    "subcategory": "Proton Pump Inhibitor",
+    "use": "Used for acid-related stomach and esophageal conditions.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Famotidine",
+    "category": "Gastrointestinal",
+    "subcategory": "H2 Blocker",
+    "use": "Used to reduce stomach acid and relieve heartburn.",
+    "precautions": "Follow product or professional guidance."
+  },
+  {
+    "name": "Calcium Carbonate",
+    "category": "Gastrointestinal",
+    "subcategory": "Antacid",
+    "use": "Used for temporary relief of heartburn and indigestion.",
+    "precautions": "Do not exceed recommended amounts."
+  },
+  {
+    "name": "Magnesium Hydroxide",
+    "category": "Gastrointestinal",
+    "subcategory": "Antacid / Laxative",
+    "use": "Used for heartburn and, in some products, constipation.",
+    "precautions": "Follow product instructions."
+  },
+  {
+    "name": "Ondansetron",
+    "category": "Gastrointestinal",
+    "subcategory": "Antiemetic",
+    "use": "Used to prevent and treat certain types of nausea and vomiting.",
+    "precautions": "Prescription medicine in many settings."
+  },
+  {
+    "name": "Metoclopramide",
+    "category": "Gastrointestinal",
+    "subcategory": "Antiemetic",
+    "use": "Used for certain nausea and vomiting conditions and to promote stomach emptying.",
+    "precautions": "Should be used according to professional guidance."
+  },
+  {
+    "name": "Domperidone",
+    "category": "Gastrointestinal",
+    "subcategory": "Antiemetic",
+    "use": "Used for certain nausea and vomiting conditions.",
+    "precautions": "Has important heart-related precautions and should be used under professional guidance."
+  },
+  {
+    "name": "Loperamide",
+    "category": "Gastrointestinal",
+    "subcategory": "Antidiarrheal",
+    "use": "Used for short-term relief of certain types of diarrhea.",
+    "precautions": "Do not use for certain severe or infectious diarrheas without professional advice."
+  },
+  {
+    "name": "Bismuth Subsalicylate",
+    "category": "Gastrointestinal",
+    "subcategory": "Antidiarrheal",
+    "use": "Used for diarrhea and some indigestion symptoms.",
+    "precautions": "Contains a salicylate; follow product guidance."
+  },
+  {
+    "name": "Psyllium",
+    "category": "Gastrointestinal",
+    "subcategory": "Bulk-Forming Laxative",
+    "use": "Used to increase stool bulk and help relieve constipation.",
+    "precautions": "Take with adequate fluid according to product instructions."
+  },
+  {
+    "name": "Bisacodyl",
+    "category": "Gastrointestinal",
+    "subcategory": "Stimulant Laxative",
+    "use": "Used for short-term relief of constipation.",
+    "precautions": "Follow product instructions."
+  },
+  {
+    "name": "Senna",
+    "category": "Gastrointestinal",
+    "subcategory": "Stimulant Laxative",
+    "use": "Used for short-term relief of constipation.",
+    "precautions": "Avoid prolonged unsupervised use."
+  },
+  {
+    "name": "Polyethylene Glycol",
+    "category": "Gastrointestinal",
+    "subcategory": "Osmotic Laxative",
+    "use": "Used to relieve constipation.",
+    "precautions": "Follow product instructions."
+  },
+  {
+    "name": "Lactulose",
+    "category": "Gastrointestinal",
+    "subcategory": "Osmotic Laxative",
+    "use": "Used to treat constipation and certain liver-related conditions.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Mesalamine",
+    "category": "Gastrointestinal",
+    "subcategory": "IBD Medicine",
+    "use": "Used to treat inflammatory bowel conditions such as ulcerative colitis.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Sulfasalazine",
+    "category": "Gastrointestinal",
+    "subcategory": "IBD Medicine",
+    "use": "Used for certain inflammatory bowel conditions.",
+    "precautions": "Requires professional guidance."
+  },
+  {
+    "name": "Dicyclomine",
+    "category": "Gastrointestinal",
+    "subcategory": "Antispasmodic",
+    "use": "Used to relieve certain intestinal cramps and spasms.",
+    "precautions": "Can cause dry mouth, dizziness and other effects."
+  },
+
+  {
+    "name": "Salbutamol",
+    "category": "Respiratory",
+    "subcategory": "Bronchodilator",
+    "use": "Used to relieve breathing symptoms caused by narrowed airways.",
+    "precautions": "Use according to the prescribed or product instructions."
+  },
+  {
+    "name": "Albuterol",
+    "category": "Respiratory",
+    "subcategory": "Bronchodilator",
+    "use": "Used for quick relief of certain asthma and airway symptoms.",
+    "precautions": "Follow the prescribed inhaler instructions."
+  },
+  {
+    "name": "Levalbuterol",
+    "category": "Respiratory",
+    "subcategory": "Bronchodilator",
+    "use": "Used to relieve certain airway symptoms.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Ipratropium",
+    "category": "Respiratory",
+    "subcategory": "Anticholinergic Bronchodilator",
+    "use": "Used to improve airflow in certain respiratory conditions.",
+    "precautions": "Use according to professional instructions."
+  },
+  {
+    "name": "Tiotropium",
+    "category": "Respiratory",
+    "subcategory": "Long-Acting Bronchodilator",
+    "use": "Used as maintenance treatment for certain chronic airway diseases.",
+    "precautions": "Not generally intended as a rescue medicine."
+  },
+  {
+    "name": "Theophylline",
+    "category": "Respiratory",
+    "subcategory": "Methylxanthine",
+    "use": "Used in selected respiratory conditions.",
+    "precautions": "Has a narrow therapeutic range and requires professional monitoring."
+  },
+  {
+    "name": "Fluticasone",
+    "category": "Respiratory",
+    "subcategory": "Inhaled Corticosteroid",
+    "use": "Used to reduce airway inflammation in asthma and related conditions.",
+    "precautions": "Use regularly as prescribed; rinse mouth after inhaled use when instructed."
+  },
+  {
+    "name": "Budesonide",
+    "category": "Respiratory",
+    "subcategory": "Inhaled Corticosteroid",
+    "use": "Used to reduce airway inflammation.",
+    "precautions": "Use according to prescribed instructions."
+  },
+  {
+    "name": "Prednisone",
+    "category": "Respiratory",
+    "subcategory": "Corticosteroid",
+    "use": "Used for certain inflammatory and respiratory conditions.",
+    "precautions": "Prescription medicine; should not be stopped suddenly without professional advice when used for longer periods."
+  },
+  {
+    "name": "Guaifenesin",
+    "category": "Respiratory",
+    "subcategory": "Expectorant",
+    "use": "Helps loosen mucus so it can be coughed up more easily.",
+    "precautions": "Follow product instructions."
+  },
+  {
+    "name": "Acetylcysteine",
+    "category": "Respiratory",
+    "subcategory": "Mucolytic",
+    "use": "Helps loosen mucus in certain respiratory conditions.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Bromhexine",
+    "category": "Respiratory",
+    "subcategory": "Mucolytic",
+    "use": "Helps loosen mucus.",
+    "precautions": "Follow product instructions."
+  },
+  {
+    "name": "Dextromethorphan",
+    "category": "Respiratory",
+    "subcategory": "Cough Suppressant",
+    "use": "Used to temporarily suppress certain coughs.",
+    "precautions": "Follow product instructions and avoid inappropriate combinations."
+  },
+  {
+    "name": "Montelukast",
+    "category": "Respiratory",
+    "subcategory": "Leukotriene Modifier",
+    "use": "Used for asthma and allergic rhinitis in appropriate patients.",
+    "precautions": "Has important mental-health-related warnings; discuss concerns with a healthcare professional."
+  },
+  {
+    "name": "Omalizumab",
+    "category": "Respiratory",
+    "subcategory": "Biologic",
+    "use": "Used for certain severe allergic asthma and related conditions.",
+    "precautions": "Administered under specialist medical care."
+  },
+
+  {
+    "name": "Metformin",
+    "category": "Endocrine & Metabolic",
+    "subcategory": "Biguanide",
+    "use": "Used to help control blood glucose in type 2 diabetes.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Sitagliptin",
+    "category": "Endocrine & Metabolic",
+    "subcategory": "DPP-4 Inhibitor",
+    "use": "Used to help control blood glucose in type 2 diabetes.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Linagliptin",
+    "category": "Endocrine & Metabolic",
+    "subcategory": "DPP-4 Inhibitor",
+    "use": "Used to help control blood glucose in type 2 diabetes.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Semaglutide",
+    "category": "Endocrine & Metabolic",
+    "subcategory": "GLP-1 Medicine",
+    "use": "Used for certain diabetes and metabolic conditions.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Liraglutide",
+    "category": "Endocrine & Metabolic",
+    "subcategory": "GLP-1 Medicine",
+    "use": "Used for certain diabetes and metabolic conditions.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Tirzepatide",
+    "category": "Endocrine & Metabolic",
+    "subcategory": "Metabolic Medicine",
+    "use": "Used for certain diabetes and metabolic conditions.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Dapagliflozin",
+    "category": "Endocrine & Metabolic",
+    "subcategory": "SGLT2 Inhibitor",
+    "use": "Used for type 2 diabetes and certain cardiovascular or kidney conditions.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Empagliflozin",
+    "category": "Endocrine & Metabolic",
+    "subcategory": "SGLT2 Inhibitor",
+    "use": "Used for type 2 diabetes and certain heart or kidney conditions.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Glimepiride",
+    "category": "Endocrine & Metabolic",
+    "subcategory": "Sulfonylurea",
+    "use": "Used to help control blood glucose in type 2 diabetes.",
+    "precautions": "Can cause low blood sugar."
+  },
+  {
+    "name": "Glipizide",
+    "category": "Endocrine & Metabolic",
+    "subcategory": "Sulfonylurea",
+    "use": "Used to help control blood glucose in type 2 diabetes.",
+    "precautions": "Can cause low blood sugar."
+  },
+  {
+    "name": "Alendronate",
+    "category": "Endocrine & Metabolic",
+    "subcategory": "Bone Medicine",
+    "use": "Used to help prevent and treat osteoporosis.",
+    "precautions": "Must be taken according to specific instructions."
+  },
+  {
+    "name": "Ibandronate",
+    "category": "Endocrine & Metabolic",
+    "subcategory": "Bone Medicine",
+    "use": "Used to help treat osteoporosis.",
+    "precautions": "Follow professional instructions."
+  },
+  {
+    "name": "Risedronate",
+    "category": "Endocrine & Metabolic",
+    "subcategory": "Bone Medicine",
+    "use": "Used to treat and prevent osteoporosis.",
+    "precautions": "Follow specific administration instructions."
+  },
+
+  {
+    "name": "Cyclophosphamide",
+    "category": "Antineoplastics",
+    "subcategory": "Alkylating Agent",
+    "use": "Used in the treatment of certain cancers and other serious conditions.",
+    "precautions": "Specialist prescription medicine."
+  },
+  {
+    "name": "Temozolomide",
+    "category": "Antineoplastics",
+    "subcategory": "Alkylating Agent",
+    "use": "Used to treat certain brain tumors.",
+    "precautions": "Specialist cancer medicine."
+  },
+  {
+    "name": "Methotrexate",
+    "category": "Antineoplastics",
+    "subcategory": "Antimetabolite",
+    "use": "Used for certain cancers and some immune-mediated conditions.",
+    "precautions": "Requires careful professional monitoring."
+  },
+  {
+    "name": "Gemcitabine",
+    "category": "Antineoplastics",
+    "subcategory": "Antimetabolite",
+    "use": "Used to treat certain cancers.",
+    "precautions": "Specialist cancer medicine."
+  },
+  {
+    "name": "Doxorubicin",
+    "category": "Antineoplastics",
+    "subcategory": "Antitumor Antibiotic",
+    "use": "Used to treat various cancers.",
+    "precautions": "Specialist medicine requiring careful monitoring."
+  },
+  {
+    "name": "Paclitaxel",
+    "category": "Antineoplastics",
+    "subcategory": "Plant Alkaloid",
+    "use": "Used to treat certain cancers.",
+    "precautions": "Administered under specialist medical care."
+  },
+  {
+    "name": "Docetaxel",
+    "category": "Antineoplastics",
+    "subcategory": "Plant Alkaloid",
+    "use": "Used to treat certain cancers.",
+    "precautions": "Specialist cancer medicine."
+  },
+  {
+    "name": "Vincristine",
+    "category": "Antineoplastics",
+    "subcategory": "Plant Alkaloid",
+    "use": "Used to treat certain cancers.",
+    "precautions": "Administered under specialist supervision."
+  },
+
+  {
+    "name": "Allopurinol",
+    "category": "Anti-Inflammatory",
+    "subcategory": "Gout Medicine",
+    "use": "Used to lower uric acid levels and prevent gout attacks.",
+    "precautions": "Does not usually provide immediate relief of an acute gout attack."
+  },
+  {
+    "name": "Febuxostat",
+    "category": "Anti-Inflammatory",
+    "subcategory": "Gout Medicine",
+    "use": "Used to lower uric acid levels.",
+    "precautions": "Prescription medicine."
+  },
+  {
+    "name": "Colchicine",
+    "category": "Anti-Inflammatory",
+    "subcategory": "Gout Medicine",
+    "use": "Used for certain gout attacks and prevention.",
+    "precautions": "Too much can be dangerous; use exactly as directed."
+  },
+  {
+    "name": "Hydrocortisone",
+    "category": "Anti-Inflammatory",
+    "subcategory": "Corticosteroid",
+    "use": "Used to reduce inflammation in various conditions.",
+    "precautions": "Use according to professional guidance."
+  },
+  {
+    "name": "Methylprednisolone",
+    "category": "Anti-Inflammatory",
+    "subcategory": "Corticosteroid",
+    "use": "Used for various inflammatory and immune-related conditions.",
+    "precautions": "Prescription medicine."
   }
 ]

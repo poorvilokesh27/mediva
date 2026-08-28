@@ -1,134 +1,187 @@
-import medicineData from "../data/medicineData.json";
-import medicineCatalog from "../data/medicineCatalog.json";
+
+import localData from "../data/medicineData.json";
+
+// ============================================
+// SEARCH MEDICINES
+// ============================================
 
 export async function searchMedicines(query) {
-  const q = query.trim().toLowerCase();
-
-  if (!q) {
-    return [];
-  }
-
   try {
-    // Search the disease/condition database
-    const diseaseResults = medicineData.filter((item) => {
-      const disease = item.disease?.toLowerCase() || "";
-      const category = item.category?.toLowerCase() || "";
+    const q = String(query || "")
+      .trim()
+      .toLowerCase();
 
-      const symptoms = Array.isArray(item.symptoms)
+    if (!q) {
+      return [];
+    }
+
+    const results = localData.filter((item) => {
+      const disease =
+        String(item?.disease || "")
+          .toLowerCase();
+
+      const name =
+        String(item?.name || "")
+          .toLowerCase();
+
+      const category =
+        String(item?.category || "")
+          .toLowerCase();
+
+      const symptoms = Array.isArray(
+        item?.symptoms
+      )
         ? item.symptoms
         : [];
 
-      const medicines = Array.isArray(item.medicines)
+      const usedFor = Array.isArray(
+        item?.usedFor
+      )
+        ? item.usedFor
+        : [];
+
+      const medicines = Array.isArray(
+        item?.medicines
+      )
         ? item.medicines
         : [];
 
-      return (
-        disease.includes(q) ||
-        category.includes(q) ||
+      const relatedConditions =
+        Array.isArray(
+          item?.relatedConditions
+        )
+          ? item.relatedConditions
+          : [];
+
+      const symptomMatch =
         symptoms.some((symptom) =>
-          String(symptom).toLowerCase().includes(q)
-        ) ||
-        medicines.some((medicine) =>
-          String(medicine?.name || "")
+          String(symptom)
             .toLowerCase()
             .includes(q)
-        )
-      );
-    });
+        );
 
-    // Search the medicine catalog
-    const catalogResults = medicineCatalog.filter((medicine) => {
-      const name = medicine.name?.toLowerCase() || "";
-      const category = medicine.category?.toLowerCase() || "";
+      const usedForMatch =
+        usedFor.some((value) =>
+          String(value)
+            .toLowerCase()
+            .includes(q)
+        );
 
-      const usedFor = Array.isArray(medicine.usedFor)
-        ? medicine.usedFor
-        : [];
+      const relatedConditionMatch =
+        relatedConditions.some((value) =>
+          String(value)
+            .toLowerCase()
+            .includes(q)
+        );
 
-      const relatedConditions = Array.isArray(
-        medicine.relatedConditions
-      )
-        ? medicine.relatedConditions
-        : [];
+      const medicineMatch =
+        medicines.some((medicine) =>
+          String(
+            medicine?.name || ""
+          )
+            .toLowerCase()
+            .includes(q)
+        );
 
       return (
+        disease.includes(q) ||
         name.includes(q) ||
         category.includes(q) ||
-        usedFor.some((item) =>
-          String(item).toLowerCase().includes(q)
-        ) ||
-        relatedConditions.some((item) =>
-          String(item).toLowerCase().includes(q)
-        )
+        symptomMatch ||
+        usedForMatch ||
+        relatedConditionMatch ||
+        medicineMatch
       );
     });
 
-    console.log("Search:", q);
-    console.log("Disease results:", diseaseResults);
-    console.log("Medicine results:", catalogResults);
-
-    // Convert catalog medicines into the same basic shape
-    // expected by the existing MedicineDetailScreen.
-    const convertedCatalogResults = catalogResults.map(
-      (medicine) => ({
-        id: medicine.id,
-        disease: medicine.name,
-        category: medicine.category,
-        symptoms: medicine.usedFor || [],
-        medicines: [
-          {
-            name: medicine.name,
-            notes: medicine.precautions || "",
-          },
-        ],
-        precautions: medicine.precautions || "",
-        disclaimer:
-          "General educational information only. This is not a prescription.",
-        image: medicine.image,
-        forms: medicine.forms || [],
-        relatedConditions:
-          medicine.relatedConditions || [],
-        whenToSeekHelp:
-          medicine.whenToSeekHelp || "",
-      })
+    console.log(
+      "SEARCH QUERY:",
+      q
     );
 
-    // Combine both databases without duplicates
-    const combined = [
-      ...diseaseResults,
-      ...convertedCatalogResults,
-    ];
-
-    const uniqueResults = combined.filter(
-      (item, index, array) =>
-        index ===
-        array.findIndex(
-          (other) =>
-            other.disease?.toLowerCase() ===
-            item.disease?.toLowerCase()
-        )
+    console.log(
+      "SEARCH RESULTS:",
+      results.length
     );
 
-    return uniqueResults;
+    return results;
   } catch (error) {
-    console.log("Medicine search error:", error);
+    console.log(
+      "Medicine search error:",
+      error
+    );
+
     return [];
   }
 }
 
+// ============================================
+// GET ALL CATEGORIES
+// ============================================
+
 export function getAllCategories() {
-  const diseaseCategories = medicineData
-    .map((item) => item.category)
-    .filter(Boolean);
+  try {
+    const categories = localData
+      .map((item) => item?.category)
+      .filter(Boolean);
 
-  const medicineCategories = medicineCatalog
-    .map((item) => item.category)
-    .filter(Boolean);
+    return [
+      ...new Set(categories),
+    ];
+  } catch (error) {
+    console.log(
+      "CATEGORY ERROR:",
+      error
+    );
 
-  return [
-    ...new Set([
-      ...diseaseCategories,
-      ...medicineCategories,
-    ]),
-  ];
+    return [];
+  }
+}
+
+// ============================================
+// GET ALL MEDICINES
+// ============================================
+
+export function getAllMedicines() {
+  try {
+    return Array.isArray(localData)
+      ? localData
+      : [];
+  } catch (error) {
+    console.log(
+      "GET ALL MEDICINES ERROR:",
+      error
+    );
+
+    return [];
+  }
+}
+
+// ============================================
+// GET MEDICINE BY ID
+// ============================================
+
+export function getMedicineById(
+  medicineId
+) {
+  try {
+    if (!medicineId) {
+      return null;
+    }
+
+    const found = localData.find(
+      (item) =>
+        String(item?.id) ===
+        String(medicineId)
+    );
+
+    return found || null;
+  } catch (error) {
+    console.log(
+      "GET MEDICINE ERROR:",
+      error
+    );
+
+    return null;
+  }
 }

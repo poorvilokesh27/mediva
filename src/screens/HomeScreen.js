@@ -1,170 +1,181 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   View,
   Text,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
   StyleSheet,
-  ActivityIndicator,
-  Keyboard,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
+  StatusBar,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-import { searchMedicines } from "../services/medicineService";
-import { addHistory, getHistory } from "../services/historyService";
-import { useAuth } from "../context/AuthContext";
+import medicineCatalog from "../data/medicineCatalog";
 
 export default function HomeScreen({ navigation }) {
-  const { user } = useAuth();
+  const [searchText, setSearchText] = useState("");
 
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-  const [searching, setSearching] = useState(false);
-  const [recentSearches, setRecentSearches] = useState([]);
-
-  useEffect(() => {
-    loadRecentSearches();
-  }, [user]);
-
-  async function loadRecentSearches() {
-    if (!user) return;
-
-    try {
-      const history = await getHistory(user.id);
-
-      const searches = history
-        .filter((item) => item.type === "search")
-        .slice(0, 5);
-
-      setRecentSearches(searches);
-    } catch (error) {
-      console.log("Recent searches error:", error);
-      setRecentSearches([]);
-    }
-  }
-
-  async function handleSearch(searchText = query) {
-    const text = String(searchText).trim();
-
-    if (!text) {
-      return;
-    }
-
-    setQuery(text);
-    Keyboard.dismiss();
-    setSearching(true);
-
-    try {
-      console.log("Searching for:", text);
-
-      const data = await searchMedicines(text);
-
-      console.log("Search results received:", data);
-
-      setResults(Array.isArray(data) ? data : []);
-
-      if (user) {
-        await addHistory(user.id, "search", text);
-        await loadRecentSearches();
-      }
-    } catch (error) {
-      console.log("Search error:", error);
-      setResults([]);
-    } finally {
-      setSearching(false);
-    }
-  }
-
-  function openMedicine(item) {
-    navigation.navigate("MedicineDetail", {
-      item,
-    });
-  }
-
-  const popularMedicines = [
-    {
-      name: "Paracetamol",
-      icon: "💊",
-      description: "Pain & fever",
-    },
-    {
-      name: "Cetirizine",
-      icon: "💊",
-      description: "Allergy",
-    },
-    {
-      name: "Ibuprofen",
-      icon: "💊",
-      description: "Pain relief",
-    },
-    {
-      name: "Omeprazole",
-      icon: "💊",
-      description: "Acidity",
-    },
-    {
-      name: "Metformin",
-      icon: "💊",
-      description: "Diabetes",
-    },
-  ];
+  // --------------------------------------------------
+  // MEDICINE CATEGORIES
+  // --------------------------------------------------
 
   const categories = [
     {
-      name: "Cold & Cough",
-      icon: "🤧",
-      search: "cold",
+      id: "allergy",
+      title: "Allergy",
+      subtitle: "Allergy relief",
+      icon: "flower-outline",
+      color: "#E8F5E9",
+      iconColor: "#2E7D32",
     },
     {
-      name: "Pain Relief",
-      icon: "🩹",
-      search: "pain",
+      id: "pain",
+      title: "Pain & Fever",
+      subtitle: "Pain relief",
+      icon: "bandage-outline",
+      color: "#FFF3E0",
+      iconColor: "#EF6C00",
     },
     {
-      name: "Allergy",
-      icon: "🌼",
-      search: "allergy",
+      id: "antiinfective",
+      title: "Anti-Infectives",
+      subtitle: "Infection care",
+      icon: "shield-checkmark-outline",
+      color: "#E3F2FD",
+      iconColor: "#1565C0",
     },
     {
-      name: "Vitamins",
-      icon: "💊",
-      search: "vitamin",
+      id: "cardiovascular",
+      title: "Heart & BP",
+      subtitle: "Cardiovascular",
+      icon: "heart-outline",
+      color: "#FCE4EC",
+      iconColor: "#C2185B",
     },
     {
-      name: "Digestive",
-      icon: "🍃",
-      search: "digestive",
+      id: "cns",
+      title: "Brain & Nerves",
+      subtitle: "CNS medicines",
+      icon: "pulse-outline",
+      color: "#F3E5F5",
+      iconColor: "#7B1FA2",
     },
     {
-      name: "First Aid",
-      icon: "⛑️",
-      search: "first",
+      id: "gastrointestinal",
+      title: "Digestive",
+      subtitle: "Stomach & gut",
+      icon: "nutrition-outline",
+      color: "#FFF8E1",
+      iconColor: "#F9A825",
+    },
+    {
+      id: "respiratory",
+      title: "Respiratory",
+      subtitle: "Cough & breathing",
+      icon: "cloud-outline",
+      color: "#E0F7FA",
+      iconColor: "#00838F",
+    },
+    {
+      id: "endocrine",
+      title: "Endocrine",
+      subtitle: "Hormonal & metabolic",
+      icon: "water-outline",
+      color: "#EDE7F6",
+      iconColor: "#512DA8",
+    },
+    {
+      id: "antiinflammatory",
+      title: "Anti-Inflammatory",
+      subtitle: "Inflammation care",
+      icon: "medical-outline",
+      color: "#FBE9E7",
+      iconColor: "#D84315",
     },
   ];
 
-  function searchFromCard(text) {
-    handleSearch(text);
-  }
+  // --------------------------------------------------
+  // SEARCH
+  // --------------------------------------------------
+
+  const medicineList = useMemo(() => {
+    if (Array.isArray(medicineCatalog)) {
+      return medicineCatalog;
+    }
+
+    if (medicineCatalog?.medicines) {
+      return medicineCatalog.medicines;
+    }
+
+    return [];
+  }, []);
+
+  const searchResults = useMemo(() => {
+    const query = searchText.trim().toLowerCase();
+
+    if (!query) {
+      return [];
+    }
+
+    return medicineList
+      .filter((medicine) => {
+        const name = String(
+          medicine.name ||
+            medicine.medicineName ||
+            medicine.genericName ||
+            ""
+        ).toLowerCase();
+
+        const category = String(
+          medicine.category || ""
+        ).toLowerCase();
+
+        return (
+          name.includes(query) ||
+          category.includes(query)
+        );
+      })
+      .slice(0, 5);
+  }, [searchText, medicineList]);
+
+ const openMedicine = (medicine) => {
+  navigation.navigate("MedicineDetail", {
+    item: medicine,
+  });
+};
+  // --------------------------------------------------
+  // CATEGORY PRESS
+  // --------------------------------------------------
+
+  const openCategory = (category) => {
+  navigation.navigate("Search", {
+    category: category.title,
+    categoryId: category.id,
+  });
+};
+  // --------------------------------------------------
+  // UI
+  // --------------------------------------------------
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar barStyle="dark-content" />
+
       <ScrollView
-        style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={styles.container}
       >
         {/* HEADER */}
+
         <View style={styles.header}>
           <View>
-            <Text style={styles.welcome}>Welcome to</Text>
-
-            <Text style={styles.logo}>
-              💊 MediPal
+            <Text style={styles.smallTitle}>
+              Welcome to
             </Text>
 
-            <Text style={styles.subtitle}>
-              Your health information companion
+            <Text style={styles.logoText}>
+              Medi<Text style={styles.logoAccent}>Pal</Text>
             </Text>
           </View>
 
@@ -172,603 +183,549 @@ export default function HomeScreen({ navigation }) {
             style={styles.profileButton}
             onPress={() => navigation.navigate("Profile")}
           >
-            <Text style={styles.profileIcon}>👤</Text>
+            <Ionicons
+              name="person-outline"
+              size={24}
+              color="#1976D2"
+            />
           </TouchableOpacity>
+        </View>
+
+        {/* WELCOME CARD */}
+
+        <View style={styles.welcomeCard}>
+          <View style={styles.welcomeTextContainer}>
+            <Text style={styles.welcomeTitle}>
+              Your health companion
+            </Text>
+
+            <Text style={styles.welcomeSubtitle}>
+              Find medicines and health information easily.
+            </Text>
+          </View>
+
+          <View style={styles.healthIcon}>
+            <Ionicons
+              name="medical"
+              size={38}
+              color="#FFFFFF"
+            />
+          </View>
         </View>
 
         {/* SEARCH */}
-        <View style={styles.searchContainer}>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search medicine or disease..."
-            placeholderTextColor="#888"
-            value={query}
-            onChangeText={(text) => {
-              setQuery(text);
 
-              if (text.trim() === "") {
-                setResults([]);
+        <View style={styles.searchContainer}>
+          <Ionicons
+            name="search-outline"
+            size={23}
+            color="#7A8793"
+          />
+
+          <TextInput
+            value={searchText}
+            onChangeText={setSearchText}
+            placeholder="Search medicine or category..."
+            placeholderTextColor="#9AA5AF"
+            style={styles.searchInput}
+            returnKeyType="search"
+            onSubmitEditing={() => {
+              if (searchText.trim()) {
+                navigation.navigate("Search", {
+                  query: searchText.trim(),
+                });
               }
             }}
-            autoCapitalize="none"
-            autoCorrect={false}
-            returnKeyType="search"
-            onSubmitEditing={() => handleSearch(query)}
           />
 
-          <TouchableOpacity
-            style={styles.searchButton}
-            onPress={() => handleSearch(query)}
-          >
-            <Text style={styles.searchButtonText}>
-              🔎
-            </Text>
-          </TouchableOpacity>
+          {searchText.length > 0 && (
+            <TouchableOpacity
+              onPress={() => setSearchText("")}
+            >
+              <Ionicons
+                name="close-circle"
+                size={21}
+                color="#9AA5AF"
+              />
+            </TouchableOpacity>
+          )}
         </View>
 
-        {/* LOADING */}
-        {searching && (
-          <ActivityIndicator
-            size="small"
-            color="#1E88E5"
-            style={styles.loader}
-          />
-        )}
-
         {/* SEARCH RESULTS */}
-        {!searching && results.length > 0 && (
-          <View>
-            <Text style={styles.sectionTitle}>
-              Search Results
-            </Text>
 
-            {results.map((item, index) => (
+        {searchResults.length > 0 && (
+          <View style={styles.searchResults}>
+            {searchResults.map((medicine, index) => (
               <TouchableOpacity
                 key={
-                  item.id?.toString() ||
-                  index.toString()
+                  medicine.id ||
+                  medicine.name ||
+                  index
                 }
-                style={styles.resultCard}
-                onPress={() => openMedicine(item)}
-                activeOpacity={0.8}
+                style={styles.resultItem}
+                onPress={() => openMedicine(medicine)}
               >
                 <View style={styles.resultIcon}>
-                  <Text style={styles.medicineEmoji}>
-                    💊
-                  </Text>
+                  <Ionicons
+                    name="medical-outline"
+                    size={21}
+                    color="#1976D2"
+                  />
                 </View>
 
-                <View style={styles.resultInfo}>
-                  <Text style={styles.resultTitle}>
-                    {item.disease || item.name || "Medicine"}
+                <View style={styles.resultText}>
+                  <Text style={styles.resultName}>
+                    {medicine.name ||
+                      medicine.medicineName ||
+                      medicine.genericName}
                   </Text>
 
                   <Text style={styles.resultCategory}>
-                    {item.category || "General health"}
-                  </Text>
-
-                  <Text
-                    style={styles.resultSymptoms}
-                    numberOfLines={2}
-                  >
-                    {Array.isArray(item.symptoms)
-                      ? item.symptoms.join(", ")
-                      : ""}
+                    {medicine.category ||
+                      "Medicine"}
                   </Text>
                 </View>
 
-                <Text style={styles.arrow}>
-                  ›
-                </Text>
+                <Ionicons
+                  name="chevron-forward"
+                  size={20}
+                  color="#9AA5AF"
+                />
               </TouchableOpacity>
             ))}
+
+            <TouchableOpacity
+              style={styles.viewAllButton}
+              onPress={() =>
+                navigation.navigate("Search", {
+                  query: searchText.trim(),
+                })
+              }
+            >
+              <Text style={styles.viewAllText}>
+                View all results
+              </Text>
+            </TouchableOpacity>
           </View>
         )}
 
-        {/* NO RESULTS */}
-        {!searching &&
-          query.trim().length > 0 &&
-          results.length === 0 && (
-            <Text style={styles.noResults}>
-              No matches found. Try another medicine or disease.
+        {/* QUICK AI */}
+
+        <TouchableOpacity
+          style={styles.aiCard}
+          onPress={() => navigation.navigate("Chatbot")}
+        >
+          <View style={styles.aiIcon}>
+            <Ionicons
+              name="chatbubbles-outline"
+              size={29}
+              color="#FFFFFF"
+            />
+          </View>
+
+          <View style={styles.aiTextContainer}>
+            <Text style={styles.aiTitle}>
+              Ask MediPal AI
             </Text>
-          )}
 
-        {/* HOME CONTENT */}
-        {query.trim().length === 0 && (
-          <>
-            {/* POPULAR MEDICINES */}
-            <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>
-                ⭐ Popular medicines
-              </Text>
-            </View>
+            <Text style={styles.aiSubtitle}>
+              Ask about symptoms, diseases or medicines
+            </Text>
+          </View>
 
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.horizontalContent}
-            >
-              {popularMedicines.map((medicine) => (
-                <TouchableOpacity
-                  key={medicine.name}
-                  style={styles.popularCard}
-                  onPress={() =>
-                    searchFromCard(medicine.name)
-                  }
-                  activeOpacity={0.8}
-                >
-                  <View style={styles.popularIcon}>
-                    <Text style={styles.popularEmoji}>
-                      {medicine.icon}
-                    </Text>
-                  </View>
+          <Ionicons
+            name="chevron-forward"
+            size={23}
+            color="#FFFFFF"
+          />
+        </TouchableOpacity>
 
-                  <Text style={styles.popularName}>
-                    {medicine.name}
-                  </Text>
+        {/* CATEGORY TITLE */}
 
-                  <Text style={styles.popularDescription}>
-                    {medicine.description}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-
-            {/* CATEGORIES */}
+        <View style={styles.sectionHeader}>
+          <View>
             <Text style={styles.sectionTitle}>
-              🩺 Medicine categories
+              Explore categories
             </Text>
 
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.horizontalContent}
-            >
-              {categories.map((category) => (
-                <TouchableOpacity
-                  key={category.name}
-                  style={styles.categoryCard}
-                  onPress={() =>
-                    searchFromCard(category.search)
-                  }
-                  activeOpacity={0.8}
-                >
-                  <Text style={styles.categoryIcon}>
-                    {category.icon}
-                  </Text>
+            <Text style={styles.sectionSubtitle}>
+              Find medicines by health category
+            </Text>
+          </View>
+        </View>
 
-                  <Text style={styles.categoryName}>
-                    {category.name}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
+        {/* CATEGORY GRID */}
 
-            {/* RECENT SEARCHES */}
-            <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>
-                📋 Recent searches
-              </Text>
-            </View>
-
-            {recentSearches.length === 0 ? (
-              <Text style={styles.emptyText}>
-                Your recent searches will appear here.
-              </Text>
-            ) : (
-              recentSearches.map((item) => (
-                <TouchableOpacity
-                  key={item.id}
-                  style={styles.historyCard}
-                  onPress={() =>
-                    searchFromCard(item.content)
-                  }
-                  activeOpacity={0.8}
-                >
-                  <Text style={styles.historyIcon}>
-                    🔎
-                  </Text>
-
-                  <View>
-                    <Text style={styles.historyText}>
-                      {item.content}
-                    </Text>
-
-                    <Text style={styles.historySubtext}>
-                      Search again
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              ))
-            )}
-
-            {/* REMINDERS */}
-            <View style={styles.featureCard}>
-              <Text style={styles.featureIcon}>
-                ⏰
-              </Text>
-
-              <View style={styles.featureText}>
-                <Text style={styles.featureTitle}>
-                  Today's reminders
-                </Text>
-
-                <Text style={styles.featureSubtitle}>
-                  Keep track of your medicine schedule.
-                </Text>
-              </View>
-
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("Reminders")
-                }
-              >
-                <Text style={styles.featureButton}>
-                  Open
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            {/* CHATBOT */}
+        <View style={styles.categoryGrid}>
+          {categories.map((category) => (
             <TouchableOpacity
-              style={styles.chatCard}
-              onPress={() =>
-                navigation.navigate("Chatbot")
-              }
-              activeOpacity={0.85}
+              key={category.id}
+              style={[
+                styles.categoryCard,
+                {
+                  backgroundColor:
+                    category.color,
+                },
+              ]}
+              activeOpacity={0.8}
+              onPress={() => openCategory(category)}
             >
-              <Text style={styles.chatIcon}>
-                💬
-              </Text>
-
-              <View style={styles.chatTextContainer}>
-                <Text style={styles.chatTitle}>
-                  Ask MediPal
-                </Text>
-
-                <Text style={styles.chatSubtitle}>
-                  Have a question about a medicine or disease?
-                </Text>
+              <View
+                style={[
+                  styles.categoryIcon,
+                  {
+                    backgroundColor:
+                      "#FFFFFF",
+                  },
+                ]}
+              >
+                <Ionicons
+                  name={category.icon}
+                  size={27}
+                  color={category.iconColor}
+                />
               </View>
 
-              <Text style={styles.chatArrow}>
-                ›
+              <Text style={styles.categoryTitle}>
+                {category.title}
               </Text>
+
+              <Text style={styles.categorySubtitle}>
+                {category.subtitle}
+              </Text>
+
+              <View style={styles.arrowCircle}>
+                <Ionicons
+                  name="arrow-forward"
+                  size={15}
+                  color={category.iconColor}
+                />
+              </View>
             </TouchableOpacity>
-          </>
-        )}
+          ))}
+        </View>
+
+        {/* SAFETY MESSAGE */}
+
+        <View style={styles.infoCard}>
+          <Ionicons
+            name="information-circle-outline"
+            size={25}
+            color="#1976D2"
+          />
+
+          <View style={styles.infoText}>
+            <Text style={styles.infoTitle}>
+              Health information
+            </Text>
+
+            <Text style={styles.infoDescription}>
+              MediPal provides general health information.
+              Always consult a qualified healthcare
+              professional for medical advice.
+            </Text>
+          </View>
+        </View>
+
+        <View style={{ height: 20 }} />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
+// ======================================================
+// STYLES
+// ======================================================
+
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    backgroundColor: "#F5F7FA",
+    backgroundColor: "#F7FAFD",
   },
 
-  scrollContent: {
-    paddingBottom: 120,
+  container: {
+    paddingHorizontal: 18,
+    paddingTop: 12,
   },
 
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 18,
+    marginBottom: 18,
   },
 
-  welcome: {
-    fontSize: 14,
-    color: "#777",
-  },
-
-  logo: {
-    fontSize: 27,
-    fontWeight: "800",
-    color: "#1E88E5",
-    marginTop: 2,
-  },
-
-  subtitle: {
+  smallTitle: {
     fontSize: 13,
-    color: "#777",
-    marginTop: 3,
+    color: "#7A8793",
+    marginBottom: 2,
+  },
+
+  logoText: {
+    fontSize: 29,
+    fontWeight: "800",
+    color: "#12344D",
+    letterSpacing: -0.5,
+  },
+
+  logoAccent: {
+    color: "#1976D2",
   },
 
   profileButton: {
     width: 46,
     height: 46,
     borderRadius: 23,
-    backgroundColor: "#E8F3FF",
-    alignItems: "center",
+    backgroundColor: "#EAF4FF",
     justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#D7EAFB",
   },
 
-  profileIcon: {
-    fontSize: 23,
+  welcomeCard: {
+    minHeight: 125,
+    borderRadius: 22,
+    padding: 20,
+    backgroundColor: "#1976D2",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    overflow: "hidden",
+    marginBottom: 18,
+  },
+
+  welcomeTextContainer: {
+    flex: 1,
+    paddingRight: 12,
+  },
+
+  welcomeTitle: {
+    color: "#FFFFFF",
+    fontSize: 21,
+    fontWeight: "800",
+    marginBottom: 7,
+  },
+
+  welcomeSubtitle: {
+    color: "#EAF4FF",
+    fontSize: 13,
+    lineHeight: 19,
+  },
+
+  healthIcon: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: "rgba(255,255,255,0.18)",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   searchContainer: {
+    height: 56,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 17,
     flexDirection: "row",
-    backgroundColor: "#fff",
-    marginHorizontal: 16,
-    borderRadius: 14,
-    paddingLeft: 16,
-    paddingRight: 5,
-    height: 54,
     alignItems: "center",
-    elevation: 2,
+    paddingHorizontal: 16,
+    borderWidth: 1,
+    borderColor: "#E1E9F0",
+    marginBottom: 12,
   },
 
   searchInput: {
     flex: 1,
     fontSize: 15,
-    color: "#222",
+    color: "#243746",
+    marginLeft: 10,
+    paddingVertical: 0,
   },
 
-  searchButton: {
-    width: 46,
-    height: 44,
-    borderRadius: 12,
-    backgroundColor: "#1E88E5",
-    alignItems: "center",
-    justifyContent: "center",
+  searchResults: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 17,
+    borderWidth: 1,
+    borderColor: "#E1E9F0",
+    marginBottom: 14,
+    overflow: "hidden",
   },
 
-  searchButtonText: {
-    fontSize: 20,
-  },
-
-  loader: {
-    marginTop: 20,
-  },
-
-  sectionHeader: {
-    marginTop: 24,
-  },
-
-  sectionTitle: {
-    fontSize: 19,
-    fontWeight: "800",
-    color: "#222",
-    marginHorizontal: 16,
-    marginTop: 24,
-    marginBottom: 12,
-  },
-
-  horizontalContent: {
-    paddingHorizontal: 16,
-  },
-
-  popularCard: {
-    width: 145,
-    backgroundColor: "#fff",
-    borderRadius: 15,
-    padding: 14,
-    marginRight: 12,
-    elevation: 2,
-  },
-
-  popularIcon: {
-    width: 55,
-    height: 55,
-    borderRadius: 15,
-    backgroundColor: "#EAF4FF",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 10,
-  },
-
-  popularEmoji: {
-    fontSize: 28,
-  },
-
-  popularName: {
-    fontSize: 15,
-    fontWeight: "700",
-    color: "#222",
-  },
-
-  popularDescription: {
-    fontSize: 12,
-    color: "#777",
-    marginTop: 4,
-  },
-
-  categoryCard: {
-    width: 125,
-    height: 110,
-    backgroundColor: "#fff",
-    borderRadius: 15,
-    marginRight: 12,
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 2,
-  },
-
-  categoryIcon: {
-    fontSize: 32,
-    marginBottom: 8,
-  },
-
-  categoryName: {
-    fontSize: 13,
-    fontWeight: "700",
-    color: "#333",
-    textAlign: "center",
-  },
-
-  resultCard: {
+  resultItem: {
+    minHeight: 65,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
-    marginHorizontal: 16,
-    marginBottom: 12,
-    padding: 14,
-    borderRadius: 14,
-    elevation: 2,
+    paddingHorizontal: 13,
+    borderBottomWidth: 1,
+    borderBottomColor: "#EDF1F5",
   },
 
   resultIcon: {
-    width: 58,
-    height: 58,
-    borderRadius: 14,
+    width: 40,
+    height: 40,
+    borderRadius: 12,
     backgroundColor: "#EAF4FF",
-    alignItems: "center",
     justifyContent: "center",
-    marginRight: 12,
+    alignItems: "center",
+    marginRight: 11,
   },
 
-  medicineEmoji: {
-    fontSize: 29,
-  },
-
-  resultInfo: {
+  resultText: {
     flex: 1,
   },
 
-  resultTitle: {
-    fontSize: 17,
+  resultName: {
+    fontSize: 15,
     fontWeight: "700",
-    color: "#1E88E5",
+    color: "#253746",
   },
 
   resultCategory: {
-    fontSize: 13,
-    color: "#666",
+    fontSize: 12,
+    color: "#7C8994",
     marginTop: 3,
   },
 
-  resultSymptoms: {
-    fontSize: 13,
-    color: "#444",
-    marginTop: 5,
+  viewAllButton: {
+    paddingVertical: 14,
+    alignItems: "center",
   },
 
-  arrow: {
-    fontSize: 28,
-    color: "#999",
-    marginLeft: 8,
+  viewAllText: {
+    color: "#1976D2",
+    fontSize: 14,
+    fontWeight: "700",
   },
 
-  noResults: {
-    textAlign: "center",
-    color: "#777",
-    marginTop: 20,
-    marginHorizontal: 20,
-  },
-
-  emptyText: {
-    color: "#888",
-    textAlign: "center",
-    marginHorizontal: 20,
-    marginTop: 5,
-  },
-
-  historyCard: {
+  aiCard: {
+    minHeight: 76,
+    borderRadius: 19,
+    backgroundColor: "#5E35B1",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
-    marginHorizontal: 16,
-    marginBottom: 9,
-    padding: 13,
-    borderRadius: 12,
+    paddingHorizontal: 15,
+    marginBottom: 24,
+  },
+
+  aiIcon: {
+    width: 49,
+    height: 49,
+    borderRadius: 15,
+    backgroundColor: "rgba(255,255,255,0.18)",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 12,
+  },
+
+  aiTextContainer: {
+    flex: 1,
+  },
+
+  aiTitle: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "800",
+    marginBottom: 3,
+  },
+
+  aiSubtitle: {
+    color: "#EDE7F6",
+    fontSize: 12,
+    lineHeight: 17,
+  },
+
+  sectionHeader: {
+    marginBottom: 14,
+  },
+
+  sectionTitle: {
+    fontSize: 21,
+    fontWeight: "800",
+    color: "#203746",
+  },
+
+  sectionSubtitle: {
+    fontSize: 12.5,
+    color: "#7A8793",
+    marginTop: 4,
+  },
+
+  categoryGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+
+  categoryCard: {
+    width: "48%",
+    minHeight: 165,
+    borderRadius: 20,
+    padding: 15,
+    marginBottom: 14,
+    position: "relative",
+  },
+
+  categoryIcon: {
+    width: 50,
+    height: 50,
+    borderRadius: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 14,
     elevation: 1,
   },
 
-  historyIcon: {
-    fontSize: 20,
-    marginRight: 12,
-  },
-
-  historyText: {
+  categoryTitle: {
     fontSize: 15,
-    fontWeight: "600",
-    color: "#333",
-  },
-
-  historySubtext: {
-    fontSize: 12,
-    color: "#888",
-    marginTop: 2,
-  },
-
-  featureCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    marginHorizontal: 16,
-    marginTop: 22,
-    padding: 16,
-    borderRadius: 15,
-    elevation: 2,
-  },
-
-  featureIcon: {
-    fontSize: 28,
-    marginRight: 12,
-  },
-
-  featureText: {
-    flex: 1,
-  },
-
-  featureTitle: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#222",
-  },
-
-  featureSubtitle: {
-    fontSize: 12,
-    color: "#777",
-    marginTop: 3,
-  },
-
-  featureButton: {
-    color: "#1E88E5",
-    fontWeight: "700",
-  },
-
-  chatCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#1E88E5",
-    marginHorizontal: 16,
-    marginTop: 14,
-    padding: 17,
-    borderRadius: 15,
-  },
-
-  chatIcon: {
-    fontSize: 30,
-    marginRight: 13,
-  },
-
-  chatTextContainer: {
-    flex: 1,
-  },
-
-  chatTitle: {
-    fontSize: 17,
     fontWeight: "800",
-    color: "#fff",
+    color: "#253746",
+    marginBottom: 5,
   },
 
-  chatSubtitle: {
-    fontSize: 12,
-    color: "#E8F3FF",
-    marginTop: 3,
+  categorySubtitle: {
+    fontSize: 11.5,
+    color: "#687781",
+    lineHeight: 16,
+    paddingRight: 5,
   },
 
-  chatArrow: {
-    fontSize: 30,
-    color: "#fff",
-    marginLeft: 8,
+  arrowCircle: {
+    position: "absolute",
+    right: 12,
+    bottom: 12,
+    width: 29,
+    height: 29,
+    borderRadius: 15,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  infoCard: {
+    marginTop: 8,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 18,
+    padding: 15,
+    flexDirection: "row",
+    borderWidth: 1,
+    borderColor: "#E1E9F0",
+  },
+
+  infoText: {
+    flex: 1,
+    marginLeft: 11,
+  },
+
+  infoTitle: {
+    fontSize: 14,
+    fontWeight: "800",
+    color: "#263B4A",
+    marginBottom: 4,
+  },
+
+  infoDescription: {
+    fontSize: 11.5,
+    color: "#73808A",
+    lineHeight: 17,
   },
 });

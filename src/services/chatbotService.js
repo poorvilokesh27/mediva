@@ -1,54 +1,64 @@
-import localData from "../data/medicineData.json";
+import { supabase } from "../config/supabase";
 
-// OPTIONAL: plug in a real LLM (Anthropic/OpenAI) here for smarter answers.
-// Put your backend proxy URL below - NEVER call the LLM API directly from
-// the app with a secret key embedded in the client. Route through your own
-// serverless function (e.g. a Supabase Edge Function) that holds the key.
-const CHAT_BACKEND_URL = ""; // e.g. "https://YOUR-PROJECT-REF.functions.supabase.co/chat"
+// =====================================================
+// MEDIPAL GEMINI AI CHATBOT
+// =====================================================
 
 export async function askChatbot(message) {
-  if (CHAT_BACKEND_URL) {
-    try {
-      const res = await fetch(CHAT_BACKEND_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
-      });
-      const data = await res.json();
-      if (data?.reply) return data.reply;
-    } catch (e) {
-      // fall through to local rule-based reply
+  try {
+    const text = String(message || "").trim();
+
+    if (!text) {
+      return "Please type a question.";
     }
-  }
-  return ruleBasedReply(message);
-}
 
-function ruleBasedReply(message) {
-  const q = message.toLowerCase();
+    console.log("🔥 GEMINI CHATBOT SERVICE CALLED 🔥");
+    console.log("🔥 USER MESSAGE:", text);
 
-  const match = localData.find(
-    (item) =>
-      q.includes(item.disease.toLowerCase()) ||
-      item.symptoms.some((s) => q.includes(s.toLowerCase())) ||
-      item.medicines.some((m) => q.includes(m.name.toLowerCase()))
-  );
+    const { data, error } =
+      await supabase.functions.invoke("geminie-medipal-", {
+        body: {
+          message: text,
+        },
+      });
 
-  if (match) {
-    const medsList = match.medicines
-      .map((m) => `- ${m.name} (${m.dosage}) - ${m.notes}`)
-      .join("\n");
-    return (
-      `Here's what I found on ${match.disease}:\n\n` +
-      `Common symptoms: ${match.symptoms.join(", ")}\n\n` +
-      `Typical medicines:\n${medsList}\n\n` +
-      `Precaution: ${match.precautions}\n\n` +
-      `Note: ${match.disclaimer} Please consult a doctor before starting any medication.`
+    console.log("🔥 SUPABASE DATA:", data);
+    console.log("🔥 SUPABASE ERROR:", error);
+
+    if (error) {
+      console.log(
+        "MEDIPAL GEMINI FUNCTION ERROR:",
+        error
+      );
+
+      return "Sorry, I couldn't connect to the AI assistant right now. Please try again.";
+    }
+
+    if (!data) {
+      return "Sorry, I didn't receive a response from the AI assistant.";
+    }
+
+    if (data.error) {
+      console.log(
+        "MEDIPAL GEMINI ERROR:",
+        data.error
+      );
+
+      return "Sorry, the AI assistant could not process your question right now.";
+    }
+
+    if (data.reply) {
+      return data.reply;
+    }
+
+    return "Sorry, I couldn't generate a response. Please try again.";
+
+  } catch (error) {
+    console.log(
+      "CHATBOT SERVICE ERROR:",
+      error
     );
-  }
 
-  if (q.includes("hello") || q.includes("hi")) {
-    return "Hi! I'm MediPal's assistant. Ask me about a disease, symptom, or medicine, and I'll share general information.";
+    return "Sorry, something went wrong while connecting to MediPal AI.";
   }
-
-  return "I don't have specific information on that yet. Try asking about a disease name, a symptom, or a medicine name. Remember, always consult a licensed doctor for diagnosis and treatment.";
 }

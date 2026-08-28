@@ -32,8 +32,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "REPLACE_WITH_YOUR_EAS_PROJECT_ID"
+        "projectId": "bc5dff18-e110-4869-9863-85b04b2fc644"
       }
-    }
+    },
+    "owner": "poorvilokesh"
   }
 }
